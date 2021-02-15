@@ -1,0 +1,44 @@
+.grid {
+    min-width: 1896px;
+    align-items: center;
+}
+
+.grid-row {
+    height: 24px;
+}
+
+.grid-square {
+    display: inline-block;
+    background-color: transparent;
+    border: 1px solid  rgb(77, 77, 77, 0.5);
+    border-radius: 1px;
+    width: 24px;
+    height: 24px;
+    padding: 0;
+    margin: 0;
+    transition: 0.3s;
+}
+
+.grid-square:focus {
+    outline: none;
+}
+
+.grid-square.selected {
+    background-color: rgb(255, 0, 0);
+}
+
+.grid-square.unselected {
+    background-color: transparent;
+}
+
+.grid-square.start {
+    background-color: rgb(0, 255, 0)
+}
+
+.grid-square.end {
+    background-color: rgb(0, 162, 255)
+}
+
+.grid-square.visited {
+    background-color: rgb(54, 54, 54)
+}
