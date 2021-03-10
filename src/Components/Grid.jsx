@@ -1,24 +1,30 @@
 import React from "react";
 import Square from "./GridSquare";
-import { bfs } from "../Algorithms/SearchAlgorithms";
+import Popup from "./PopupWarning";
+
+import Nav from "react-bootstrap/Nav";
+import { bfs, dfs } from "../Algorithms/SearchAlgorithms";
 
 var startNodeX = 5;
-var startNodeY = 7;
-var endNodeX = 60;
-var endNodeY = 7;
+var startNodeY = 12;
+var endNodeX = 66;
+var endNodeY = 12;
 
 export default class Grid extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       grid: [],
+      algorithm: null,
     };
-    this.animateBFS = this.animateBFS.bind(this);
+
+    this.visualizeAlgorithm = this.visualizeAlgorithm.bind(this);
   }
 
   componentDidMount() {
+    // initialize grid
     const grid = [];
-    for (let i = 0; i < 15; i++) {
+    for (let i = 0; i < 25; i++) {
       grid.push([]);
       for (let j = 0; j < 72; j++) {
         let isStart = i === startNodeY && j === startNodeX,
@@ -40,7 +46,6 @@ export default class Grid extends React.Component {
           x: j,
           id: i + "-" + j,
           isWall: false,
-          onClick: (j, i) => this.onClick(j, i),
           className: className,
         });
       }
@@ -48,7 +53,7 @@ export default class Grid extends React.Component {
     this.setState({ grid: grid });
   }
 
-  onClick(x, y) {
+  handleClick(x, y) {
     if (
       (x === startNodeX && y === startNodeY) ||
       (x === endNodeX && y === endNodeY)
@@ -68,38 +73,138 @@ export default class Grid extends React.Component {
     this.setState({ grid: newGrid });
   }
 
-  animateBFS() {
-    const path = bfs(
-      this.state.grid,
-      startNodeX,
-      startNodeY,
-      endNodeX,
-      endNodeY
-    );
-    for (let i = 1; i < path.length - 1; i++) {
+  // algorithm animations //////////////////////////////////////////////
+
+  animateBFS(grid) {
+    document.getElementsByClassName("grid")[0].style.pointerEvents = "none";
+    const path = bfs(grid, startNodeX, startNodeY, endNodeX, endNodeY);
+
+    for (let i = 1; i < path.length; i++) {
+      if (path[i][1] === endNodeY && path[i][0] === endNodeX) {
+        break;
+      }
       setTimeout(() => {
         // visited[i][0] = x coorinate, visited[i][1] = y coordiante
         const id = path[i][1] + "-" + path[i][0];
         document.getElementById(id).className = "grid-square visited";
-      }, 5 * i);
+      }, 6 * i);
+    }
+    setTimeout(() => {
+      document.getElementsByClassName("grid")[0].style.pointerEvents = "auto";
+    }, path.length * 7);
+  }
+
+  animateDFS(grid) {
+    document.getElementsByClassName("grid")[0].style.pointerEvents = "none";
+    const path = dfs(grid, startNodeX, startNodeY, endNodeX, endNodeY);
+
+    for (let i = 1; i < path.length; i++) {
+      if (path[i][1] === endNodeY && path[i][0] === endNodeX) {
+        break;
+      }
+      setTimeout(() => {
+        // visited[i][0] = x coorinate, visited[i][1] = y coordiante
+        const id = path[i][1] + "-" + path[i][0];
+        document.getElementById(id).className = "grid-square visited";
+      }, 6 * i);
+    }
+    setTimeout(() => {
+      document.getElementsByClassName("grid")[0].style.pointerEvents = "auto";
+    }, path.length * 6);
+  }
+
+  // visualize button function /////////////////////////////////////////////////
+  visualizeAlgorithm() {
+    resetGrid();
+    const { algorithm, grid } = this.state;
+    if (algorithm === null) {
+      document.getElementById("popup").style.display = "block";
+    } else if (algorithm === "bfs") {
+      this.animateBFS(grid);
+    } else {
+      this.animateDFS(grid);
     }
   }
 
+  // Render ///////////////////////////////////////////////////
   render() {
     const { grid } = this.state;
     return (
       <div className="grid" align="center">
+        <Popup />
+        <Nav
+          fill
+          variant="pills"
+          onSelect={(eventKey) => {
+            this.setState({ algorithm: eventKey });
+          }}
+        >
+          <Nav.Item>
+            <Nav.Link eventKey="bfs">BFS</Nav.Link>
+          </Nav.Item>
+          <button id="visualize-btn" onClick={this.visualizeAlgorithm}>
+            Visualize!
+          </button>
+          <Nav.Item>
+            <Nav.Link eventKey="dfs">DFS</Nav.Link>
+          </Nav.Item>
+        </Nav>
         {grid.map((row, key) => {
           return (
             <div className="grid-row" key={key}>
               {row.map((node, key) => {
-                return <Square {...node} key={key} />;
+                return (
+                  <Square
+                    {...node}
+                    handleClick={(j, i) => this.handleClick(j, i)}
+                    drag={drag()}
+                    drop={drop(node.id)}
+                    key={key}
+                  />
+                );
               })}
             </div>
           );
         })}
-        <button onClick={this.animateBFS}>BFS</button>
       </div>
     );
   }
 }
+
+// JavaScript functions
+
+const resetGrid = () => {
+  for (let i = 0; i < 25; i++) {
+    for (let j = 0; j < 72; j++) {
+      // set visited nodes to blank nodes
+      let node = document.getElementById(i + "-" + j);
+      if (node.classList.contains("visited")) {
+        node.className = "grid-square unselected";
+      }
+    }
+  }
+};
+
+// drag and drop functions
+const drag = () => (e) => {
+  e.dataTransfer.setData("data", e.target.id);
+};
+
+const drop = (id) => (e) => {
+  e.preventDefault();
+  var data = e.dataTransfer.getData("data");
+  let stringId = String(id);
+  e.target.appendChild(document.getElementById(data));
+  let y = parseInt(stringId.substring(0, stringId.indexOf("-"))),
+    x = parseInt(
+      stringId.substring(stringId.indexOf("-") + 1, stringId.length)
+    );
+
+  if (data === "start") {
+    startNodeX = x;
+    startNodeY = y;
+  } else {
+    endNodeX = x;
+    endNodeY = y;
+  }
+};
