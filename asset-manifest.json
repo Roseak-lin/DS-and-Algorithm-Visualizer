@@ -1,26 +1,27 @@
 {
   "files": {
-    "main.css": "/DS-and-Algorithm-Visualizer/static/css/main.8669d9f6.chunk.css",
-    "main.js": "/DS-and-Algorithm-Visualizer/static/js/main.37a58584.chunk.js",
-    "main.js.map": "/DS-and-Algorithm-Visualizer/static/js/main.37a58584.chunk.js.map",
-    "runtime-main.js": "/DS-and-Algorithm-Visualizer/static/js/runtime-main.088dbc21.js",
-    "runtime-main.js.map": "/DS-and-Algorithm-Visualizer/static/js/runtime-main.088dbc21.js.map",
-    "static/css/2.325dfaf0.chunk.css": "/DS-and-Algorithm-Visualizer/static/css/2.325dfaf0.chunk.css",
-    "static/js/2.da6fe6f3.chunk.js": "/DS-and-Algorithm-Visualizer/static/js/2.da6fe6f3.chunk.js",
-    "static/js/2.da6fe6f3.chunk.js.map": "/DS-and-Algorithm-Visualizer/static/js/2.da6fe6f3.chunk.js.map",
-    "static/js/3.2a550bf5.chunk.js": "/DS-and-Algorithm-Visualizer/static/js/3.2a550bf5.chunk.js",
-    "static/js/3.2a550bf5.chunk.js.map": "/DS-and-Algorithm-Visualizer/static/js/3.2a550bf5.chunk.js.map",
+    "main.css": "/DS-and-Algorithm-Visualizer/static/css/main.998e9df5.chunk.css",
+    "main.js": "/DS-and-Algorithm-Visualizer/static/js/main.61955903.chunk.js",
+    "main.js.map": "/DS-and-Algorithm-Visualizer/static/js/main.61955903.chunk.js.map",
+    "runtime-main.js": "/DS-and-Algorithm-Visualizer/static/js/runtime-main.17740f27.js",
+    "runtime-main.js.map": "/DS-and-Algorithm-Visualizer/static/js/runtime-main.17740f27.js.map",
+    "static/css/2.4c97ca4f.chunk.css": "/DS-and-Algorithm-Visualizer/static/css/2.4c97ca4f.chunk.css",
+    "static/js/2.0694b8a7.chunk.js": "/DS-and-Algorithm-Visualizer/static/js/2.0694b8a7.chunk.js",
+    "static/js/2.0694b8a7.chunk.js.map": "/DS-and-Algorithm-Visualizer/static/js/2.0694b8a7.chunk.js.map",
+    "static/js/3.3dd8c704.chunk.js": "/DS-and-Algorithm-Visualizer/static/js/3.3dd8c704.chunk.js",
+    "static/js/3.3dd8c704.chunk.js.map": "/DS-and-Algorithm-Visualizer/static/js/3.3dd8c704.chunk.js.map",
     "index.html": "/DS-and-Algorithm-Visualizer/index.html",
-    "static/css/2.325dfaf0.chunk.css.map": "/DS-and-Algorithm-Visualizer/static/css/2.325dfaf0.chunk.css.map",
-    "static/css/main.8669d9f6.chunk.css.map": "/DS-and-Algorithm-Visualizer/static/css/main.8669d9f6.chunk.css.map",
-    "static/js/2.da6fe6f3.chunk.js.LICENSE.txt": "/DS-and-Algorithm-Visualizer/static/js/2.da6fe6f3.chunk.js.LICENSE.txt",
-    "static/media/arrow_right.424bf4fa.jpg": "/DS-and-Algorithm-Visualizer/static/media/arrow_right.424bf4fa.jpg"
+    "static/css/2.4c97ca4f.chunk.css.map": "/DS-and-Algorithm-Visualizer/static/css/2.4c97ca4f.chunk.css.map",
+    "static/css/main.998e9df5.chunk.css.map": "/DS-and-Algorithm-Visualizer/static/css/main.998e9df5.chunk.css.map",
+    "static/js/2.0694b8a7.chunk.js.LICENSE.txt": "/DS-and-Algorithm-Visualizer/static/js/2.0694b8a7.chunk.js.LICENSE.txt",
+    "static/media/arrow_right.91c92c08.jpg": "/DS-and-Algorithm-Visualizer/static/media/arrow_right.91c92c08.jpg",
+    "static/media/circle.abb2dcd5.png": "/DS-and-Algorithm-Visualizer/static/media/circle.abb2dcd5.png"
   },
   "entrypoints": [
-    "static/js/runtime-main.088dbc21.js",
-    "static/css/2.325dfaf0.chunk.css",
-    "static/js/2.da6fe6f3.chunk.js",
-    "static/css/main.8669d9f6.chunk.css",
-    "static/js/main.37a58584.chunk.js"
+    "static/js/runtime-main.17740f27.js",
+    "static/css/2.4c97ca4f.chunk.css",
+    "static/js/2.0694b8a7.chunk.js",
+    "static/css/main.998e9df5.chunk.css",
+    "static/js/main.61955903.chunk.js"
   ]
 }
