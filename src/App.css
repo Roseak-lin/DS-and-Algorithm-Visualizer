@@ -1,24 +1,23 @@
 .grid {
-    min-width: 1896px;
+    min-width: 90vw;
     align-items: center;
 }
 
 .grid-row {
-    height: 24px;
+    height: 1.25vw;
 }
 
 .grid-square {
     display: inline-block;
     background-color: transparent;
-    border: 1px solid rgb(77, 77, 77, 0.5);
-    border-radius: 1px;
-    width: 24px;
-    height: 24px;
+    border: 0.05vw solid rgb(77, 77, 77, 0.5);
+    width: 1.25vw;
+    height: 1.25vw;
     padding: 0;
     margin: 0;
 }
 
-/* Popup */
+/************ Popup ***********/
 
 #popup {
     display: none;
@@ -70,8 +69,8 @@
 /*********************************/
 
 #visualize-btn {
-    margin: 0 0.5em 0 0.5em;
-    border-radius: 1em;
+    vertical-align: middle;
+    border-radius: 0.25em;
     border: none;
 }
 
@@ -110,28 +109,47 @@
 .grid-square.visited {
     animation: visit-square 0.2s;
     background-color: rgb(54, 54, 54);
-    border: 1px solid rgb(255, 255, 255, 0.5);
+    border: 0.05vw solid rgb(255, 255, 255, 0.5);
 }
 
 #start {
+    margin: 0;
     float: left;
-    width: 24px;
-    height: 24px;
+    width: 1.1vw;
+    height: 1.1vw;
 }
 
 #end {
+    margin: 0;
     float: left;
-    width: 24px;
-    height: 24px;
+    width: 1.1vw;
+    height: 1.1vw;
 }
 
 @keyframes visit-square {
     from {
         background-color: rgb(251, 255, 0);
-        border: 1px solid rgb(77, 77, 77, 0.5);
+        border: 0.05vw solid rgb(77, 77, 77, 0.5);
     }
     to {
         background-color: rgb(54, 54, 54);
-        border: 1px solid rgb(255, 255, 255, 0.5);
+        border: 0.05vw solid rgb(255, 255, 255, 0.5);
     }
+}
+
+/* Nav bar */
+.nav {
+    background-color: rgb(66, 66, 66);
+}
+
+.nav-link {
+    color: #fff;
+}
+
+.nav-link:hover {
+    color: #ccc;
+}
+
+.nav-link.active {
+    background-color: #000;
 }

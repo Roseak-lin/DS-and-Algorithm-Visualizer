@@ -1,5 +1,6 @@
 import React from "react";
 import right_arrow from "../Images/arrow_right.jpg";
+import circle from "../Images/circle.png";
 
 export default class Square extends React.Component {
   render() {
@@ -32,7 +33,7 @@ export default class Square extends React.Component {
       return (
         <div className={className} id={id}>
           <img
-            src={right_arrow}
+            src={circle}
             draggable={true}
             onDragStart={(event) => drag(event)}
             id="end"

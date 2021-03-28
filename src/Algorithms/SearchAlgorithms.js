@@ -1,5 +1,6 @@
 let visited;
 
+// Breadth first search
 export function bfs(grid, startX, startY, endX, endY) {
     initializeVisited(grid);
     let path = [];
@@ -25,6 +26,7 @@ export function bfs(grid, startX, startY, endX, endY) {
     return path;
 }
 
+// Depth first search
 export function dfs(grid, startX, startY, endX, endY) {
     initializeVisited(grid);
     let path = [];
@@ -40,10 +42,10 @@ export function dfs(grid, startX, startY, endX, endY) {
         if (currentNode[0] === endX && currentNode[1] === endY) {
             return path;
         }
-        stack.push([currentNode[0] + 1, currentNode[1]]);
         stack.push([currentNode[0] - 1, currentNode[1]]);
-        stack.push([currentNode[0], currentNode[1] + 1]);
+        stack.push([currentNode[0] + 1, currentNode[1]]);
         stack.push([currentNode[0], currentNode[1] - 1]);
+        stack.push([currentNode[0], currentNode[1] + 1]);
     }
 
     // returns grid of visited nodes in order

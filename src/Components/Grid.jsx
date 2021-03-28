@@ -1,8 +1,8 @@
 import React from "react";
 import Square from "./GridSquare";
 import Popup from "./PopupWarning";
+import NavigationBar from "./NavBar"
 
-import Nav from "react-bootstrap/Nav";
 import { bfs, dfs } from "../Algorithms/SearchAlgorithms";
 
 var startNodeX = 5;
@@ -126,29 +126,22 @@ export default class Grid extends React.Component {
     }
   }
 
+  // changes the algorithm when a tab is clicked on navbar
+  changeAlgorithm(key) {
+    this.setState({algorithm: key});
+  }
+
   // Render ///////////////////////////////////////////////////
   render() {
     const { grid } = this.state;
     return (
       <div className="grid" align="center">
         <Popup />
-        <Nav
-          fill
-          variant="pills"
-          onSelect={(eventKey) => {
-            this.setState({ algorithm: eventKey });
-          }}
-        >
-          <Nav.Item>
-            <Nav.Link eventKey="bfs">BFS</Nav.Link>
-          </Nav.Item>
-          <button id="visualize-btn" onClick={this.visualizeAlgorithm}>
-            Visualize!
-          </button>
-          <Nav.Item>
-            <Nav.Link eventKey="dfs">DFS</Nav.Link>
-          </Nav.Item>
-        </Nav>
+        <NavigationBar
+          onSelect={(key) => this.changeAlgorithm(key)}
+          onClick={this.visualizeAlgorithm}
+        />
+        
         {grid.map((row, key) => {
           return (
             <div className="grid-row" key={key}>
