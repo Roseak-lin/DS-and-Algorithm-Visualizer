@@ -13,7 +13,8 @@ export default class Square extends React.Component {
       isStart,
       isEnd,
       drag,
-      drop
+      drop,
+      weight,
     } = this.props;
 
     if (isStart) {
@@ -21,8 +22,10 @@ export default class Square extends React.Component {
         <div className={className} id={id}>
           <img
             src={right_arrow}
-            draggable={true}
-            onDragStart={(event) => drag(event)}
+            draggable={false}
+            onDragStart={(event) => {
+              drag(event);
+            }}
             id="start"
             alt="start"
             title="Start"
@@ -34,8 +37,10 @@ export default class Square extends React.Component {
         <div className={className} id={id}>
           <img
             src={circle}
-            draggable={true}
-            onDragStart={(event) => drag(event)}
+            draggable={false}
+            onDragStart={(event) => {
+              drag(event);
+            }}
             id="end"
             alt="end"
             title="End"
@@ -48,9 +53,14 @@ export default class Square extends React.Component {
           className={className}
           onClick={() => handleClick(x, y)}
           id={id}
-          onDrop={(event) => drop(event)}
+          onDrop={(event) => {
+            drop(event);
+          }}
           onDragOver={(event) => event.preventDefault()}
-        ></div>
+          weight={weight}
+        >
+          {weight === null || weight === 0 ? "" : weight}
+        </div>
       );
     }
   }
