@@ -24,7 +24,6 @@
     cursor: default;
 }
 
-
 /************ Popup ***********/
 
 #popup {
@@ -65,7 +64,7 @@
 
 #close {
     position: absolute;
-    color: #ccc;
+    color: rgb(88, 88, 88);
     top: 5px;
     right: 10px;
 }
@@ -235,7 +234,7 @@
 
 #settings-close {
     position: absolute;
-    color: #ccc;
+    color: rgb(88, 88, 88);
     font-size: 2em;
     top: 0;
     right: 10px;

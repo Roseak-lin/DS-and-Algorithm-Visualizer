@@ -284,6 +284,7 @@ export default class Grid extends React.Component {
   }
 
   changeGrid(type) {
+    resetGrid();
     if (type === "weighted" && this.state.currGrid === "unweighted") {
       this.setState({
         unweightedGrid: this.state.mainGrid,
@@ -300,7 +301,7 @@ export default class Grid extends React.Component {
   }
 
   generateRandomGrid() {
-    let grid = this.state.weightedGrid.slice();
+    let grid = this.state.mainGrid.slice();
     if (this.state.currGrid === "unweighted") {
       for (let i = 0; i < 25; i++) {
         for (let j = 0; j < 72; j++) {

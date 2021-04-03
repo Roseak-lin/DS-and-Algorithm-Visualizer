@@ -18,16 +18,23 @@ export default class NavigationBar extends React.Component {
           changeAlgorithm(eventKey);
         }}
       >
-        <NavDropdown
-          title="Unweighted algorithms"
-          onClick={() => {
-            changeGrid("unweighted");
-          }}
-        >
-          <NavDropdown.Item eventKey="BFS">
+        <NavDropdown title="Unweighted algorithms">
+          <NavDropdown.Item
+            eventKey="BFS"
+            onClick={() => {
+              changeGrid("unweighted");
+            }}
+          >
             Breadth First Search
           </NavDropdown.Item>
-          <NavDropdown.Item eventKey="DFS">Depth First Search</NavDropdown.Item>
+          <NavDropdown.Item
+            eventKey="DFS"
+            onClick={() => {
+              changeGrid("unweighted");
+            }}
+          >
+            Depth First Search
+          </NavDropdown.Item>
         </NavDropdown>
 
         <button id="navbar-btn" onClick={onClick}>
@@ -35,14 +42,23 @@ export default class NavigationBar extends React.Component {
           {this.props.algorithm == null ? "" : " " + this.props.algorithm}!
         </button>
 
-        <NavDropdown
-          title="Weighted algorithms"
-          onClick={() => {
-            changeGrid("weighted");
-          }}
-        >
-          <NavDropdown.Item eventKey="Dijkstra's">Dijkstra's</NavDropdown.Item>
-          <NavDropdown.Item eventKey="A*">A*</NavDropdown.Item>
+        <NavDropdown title="Weighted algorithms">
+          <NavDropdown.Item
+            eventKey="Dijkstra's"
+            onClick={() => {
+              changeGrid("weighted");
+            }}
+          >
+            Dijkstra's
+          </NavDropdown.Item>
+          <NavDropdown.Item
+            eventKey="A*"
+            onClick={() => {
+              changeGrid("weighted");
+            }}
+          >
+            A*
+          </NavDropdown.Item>
         </NavDropdown>
 
         <button id="navbar-btn" onClick={resetGrid}>
