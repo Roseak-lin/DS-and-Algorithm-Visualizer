@@ -2,12 +2,16 @@ import React from "react";
 import Square from "./GridSquare";
 import NavigationBar from "./NavBar";
 
-import { bfs, dfs, unweightedShortestPath } from "../Algorithms/UnweightedSearchAlgorithms";
+import { bfs, dfs } from "../Algorithms/UnweightedSearchAlgorithms";
+import { dijkstra, astar } from "../Algorithms/WeightedSearchAlgorithms";
 import {
-  dijkstra,
-  weightedShortestPath,
-} from "../Algorithms/WeightedSearchAlgorithms";
+  drawUnweightedShortestPath,
+  drawWeightedShortestPath,
+} from "../Grid-Functions/PathDrawing";
 import Settings from "./Settings";
+
+const gridRows = 25;
+const gridCols = 72;
 
 var unweightedStartNodeX = 5;
 var unweightedStartNodeY = 12;
@@ -28,7 +32,7 @@ export default class Grid extends React.Component {
       weightedGrid: [],
       currGrid: "unweighted",
       algorithm: null,
-      speed: 10,
+      speed: 20,
     };
 
     this.visualizeAlgorithm = this.visualizeAlgorithm.bind(this);
@@ -37,9 +41,9 @@ export default class Grid extends React.Component {
   componentDidMount() {
     // initialize grid
     let grid = [];
-    for (let i = 0; i < 25; i++) {
+    for (let i = 0; i < gridRows; i++) {
       grid.push([]);
-      for (let j = 0; j < 72; j++) {
+      for (let j = 0; j < gridCols; j++) {
         let isStart = i === unweightedStartNodeY && j === unweightedStartNodeX,
           isEnd = i === unweightedEndNodeY && j === unweightedEndNodeX,
           className;
@@ -70,9 +74,9 @@ export default class Grid extends React.Component {
 
     // initialize weighted grid
     grid = [];
-    for (let i = 0; i < 25; i++) {
+    for (let i = 0; i < gridRows; i++) {
       grid.push([]);
-      for (let j = 0; j < 72; j++) {
+      for (let j = 0; j < gridCols; j++) {
         let isStart = i === weightedStartNodeY && j === weightedStartNodeX,
           isEnd = i === weightedEndNodeY && j === weightedEndNodeX,
           className;
@@ -92,7 +96,7 @@ export default class Grid extends React.Component {
           x: j,
           id: i + "-" + j,
           className: className,
-          weight: 0 /*Math.trunc(Math.random() * 5)*/,
+          weight: 0,
         });
       }
     }
@@ -121,7 +125,7 @@ export default class Grid extends React.Component {
     } else {
       const newSquare = {
         ...node,
-        weight: node.weight + 1,
+        weight: node.weight + 1 === 5 ? 0 : node.weight + 1,
       };
       newGrid[y][x] = newSquare;
     }
@@ -151,7 +155,14 @@ export default class Grid extends React.Component {
     }
     setTimeout(() => {
       document.getElementsByClassName("grid")[0].style.pointerEvents = "auto";
-      this.drawUnweightedShortestPath(path);
+      drawUnweightedShortestPath(
+        unweightedStartNodeX,
+        unweightedStartNodeY,
+        unweightedEndNodeX,
+        unweightedEndNodeY,
+        speed,
+        path
+      );
     }, path.length * speed);
   }
 
@@ -175,32 +186,15 @@ export default class Grid extends React.Component {
     }
     setTimeout(() => {
       document.getElementsByClassName("grid")[0].style.pointerEvents = "auto";
-      this.drawUnweightedShortestPath(path)
+      drawUnweightedShortestPath(
+        unweightedStartNodeX,
+        unweightedStartNodeY,
+        unweightedEndNodeX,
+        unweightedEndNodeY,
+        speed,
+        path
+      );
     }, path.length * speed);
-  }
-
-  drawUnweightedShortestPath(path) {
-    document.getElementsByClassName("grid")[0].style.pointerEvents = "none";
-    const shortestPath = unweightedShortestPath(
-      unweightedStartNodeX,
-      unweightedStartNodeY,
-      unweightedEndNodeX,
-      unweightedEndNodeY,
-      path
-    );
-
-    let speed = this.state.speed;
-
-    for (let i = 0; i < shortestPath.length; i++) {
-      setTimeout(() => {
-        let id = shortestPath[i][1] + "-" + shortestPath[i][0];
-        document.getElementById(id).className = "grid-square shortestpath"
-      }, speed * i * 2);
-    }
-
-    setTimeout(() => {
-      document.getElementsByClassName("grid")[0].style.pointerEvents = "auto";
-    }, speed * shortestPath.length * 2);
   }
 
   /********************* Weighted algorithms *********************/
@@ -213,7 +207,7 @@ export default class Grid extends React.Component {
       weightedEndNodeX,
       weightedEndNodeY
     );
-    const speed = this.state.speed;
+    let speed = this.state.speed;
 
     for (let i = 1; i < path.length - 1; i++) {
       setTimeout(() => {
@@ -225,28 +219,33 @@ export default class Grid extends React.Component {
 
     setTimeout(() => {
       document.getElementsByClassName("grid")[0].style.pointerEvents = "auto";
-      this.drawWeightedShortestPath(path);
+      drawWeightedShortestPath(weightedEndNodeX, weightedEndNodeY, speed, path);
     }, path.length * speed);
   }
 
-  drawWeightedShortestPath(path) {
+  animateAstar(grid) {
     document.getElementsByClassName("grid")[0].style.pointerEvents = "none";
-    let speed = this.state.speed;
-    const shortestPath = weightedShortestPath(
+    const path = astar(
+      grid,
       weightedStartNodeX,
       weightedStartNodeY,
-      path
+      weightedEndNodeX,
+      weightedEndNodeY
     );
-    for (let i = 0; i < shortestPath.length; i++) {
+
+    let speed = this.state.speed;
+
+    for (let i = 1; i < path.length - 1; i++) {
       setTimeout(() => {
-        let id = shortestPath[i][1] + "-" + shortestPath[i][0];
-        document.getElementById(id).className = "grid-square shortestpath";
-      }, speed * i * 2);
+        let id = path[i][1] + "-" + path[i][0];
+        document.getElementById(id).className = "grid-square visited";
+      }, speed * i);
     }
 
     setTimeout(() => {
       document.getElementsByClassName("grid")[0].style.pointerEvents = "auto";
-    }, shortestPath.length * speed * 2);
+      drawWeightedShortestPath(weightedEndNodeX, weightedEndNodeY, speed, path);
+    }, speed * path.length);
   }
 
   /////////////////// visualize button function //////////////////////////
@@ -262,6 +261,9 @@ export default class Grid extends React.Component {
         break;
       case "Dijkstra's":
         this.animateDijkstra(mainGrid);
+        break;
+      case "A*":
+        this.animateAstar(mainGrid);
         break;
       default:
         document.getElementById("popup").style.display = "block";
@@ -286,12 +288,30 @@ export default class Grid extends React.Component {
   changeGrid(type) {
     resetGrid();
     if (type === "weighted" && this.state.currGrid === "unweighted") {
+      document.getElementById(unweightedStartNodeY + "-" + unweightedStartNodeX).classList.replace("start", "unselected");
+      document.getElementById(unweightedEndNodeY + "-" + unweightedEndNodeX).classList.replace("end", "unselected");
+      document
+        .getElementById(weightedStartNodeY + "-" + weightedStartNodeX)
+        .appendChild(document.getElementById("start"));
+      document
+        .getElementById(weightedEndNodeY + "-" + weightedEndNodeX)
+        .appendChild(document.getElementById("end"));
+
       this.setState({
         unweightedGrid: this.state.mainGrid,
         mainGrid: this.state.weightedGrid,
         currGrid: "weighted",
       });
     } else if (type === "unweighted" && this.state.currGrid === "weighted") {
+      document.getElementById(weightedStartNodeY + "-" + weightedStartNodeX).classList.replace("start", "unselected");
+      document.getElementById(weightedEndNodeY + "-" + weightedEndNodeX).classList.replace("end", "unselected");
+      document
+        .getElementById(unweightedStartNodeY + "-" + unweightedStartNodeX)
+        .appendChild(document.getElementById("start"));
+      document
+        .getElementById(unweightedEndNodeY + "-" + unweightedEndNodeX)
+        .appendChild(document.getElementById("end"));
+
       this.setState({
         weightedGrid: this.state.mainGrid,
         mainGrid: this.state.unweightedGrid,
@@ -303,9 +323,12 @@ export default class Grid extends React.Component {
   generateRandomGrid() {
     let grid = this.state.mainGrid.slice();
     if (this.state.currGrid === "unweighted") {
-      for (let i = 0; i < 25; i++) {
-        for (let j = 0; j < 72; j++) {
-          if ((i === unweightedStartNodeY && j === unweightedStartNodeX) || (i === unweightedEndNodeY && j === unweightedEndNodeX)) {
+      for (let i = 0; i < gridRows; i++) {
+        for (let j = 0; j < gridCols; j++) {
+          if (
+            (i === unweightedStartNodeY && j === unweightedStartNodeX) ||
+            (i === unweightedEndNodeY && j === unweightedEndNodeX)
+          ) {
             continue;
           }
           grid[i][j].isWall = Math.random() * 5 > 4;
@@ -320,8 +343,8 @@ export default class Grid extends React.Component {
         this.setState({ unweightedGrid: grid });
       }
     } else {
-      for (let i = 0; i < 25; i++) {
-        for (let j = 0; j < 72; j++) {
+      for (let i = 0; i < gridRows; i++) {
+        for (let j = 0; j < gridCols; j++) {
           if (i === weightedEndNodeY && j === weightedEndNodeX) {
             grid[i][j].weight = 0;
             continue;
@@ -336,6 +359,71 @@ export default class Grid extends React.Component {
       }
     }
   }
+
+  clearWeightsAndWalls() {
+    let grid = [];
+    if (this.state.currGrid === "unweighted") {
+      for (let i = 0; i < gridRows; i++) {
+        grid.push([]);
+        for (let j = 0; j < gridCols; j++) {
+          let isStart =
+              i === unweightedStartNodeY && j === unweightedStartNodeX,
+            isEnd = i === unweightedEndNodeY && j === unweightedEndNodeX,
+            className;
+          if (i === unweightedStartNodeY && j === unweightedStartNodeX) {
+            isStart = true;
+            className = "grid-square start";
+          } else if (i === unweightedEndNodeY && j === unweightedEndNodeX) {
+            isEnd = true;
+            className = "grid-square end";
+          } else {
+            className = "grid-square unselected";
+          }
+          grid[i].push({
+            isStart: isStart,
+            isEnd: isEnd,
+            y: i,
+            x: j,
+            id: i + "-" + j,
+            isWall: false,
+            weight: 0,
+            className: className,
+          });
+        }
+      }
+    } else {
+      for (let i = 0; i < gridRows; i++) {
+        grid.push([]);
+        for (let j = 0; j < gridCols; j++) {
+          let isStart =
+              i === unweightedStartNodeY && j === unweightedStartNodeX,
+            isEnd = i === unweightedEndNodeY && j === unweightedEndNodeX,
+            className;
+          if (i === unweightedStartNodeY && j === unweightedStartNodeX) {
+            isStart = true;
+            className = "grid-square start";
+          } else if (i === unweightedEndNodeY && j === unweightedEndNodeX) {
+            isEnd = true;
+            className = "grid-square end";
+          } else {
+            className = "grid-square unselected";
+          }
+          grid[i].push({
+            isStart: isStart,
+            isEnd: isEnd,
+            y: i,
+            x: j,
+            id: i + "-" + j,
+            isWall: false,
+            weight: null,
+            className: className,
+          });
+        }
+      }
+    }
+    this.setState({ mainGrid: grid });
+  }
+
   // Render ///////////////////////////////////////////////////
   render() {
     const { mainGrid } = this.state;
@@ -347,7 +435,8 @@ export default class Grid extends React.Component {
           changeAlgorithm={(key) => this.changeAlgorithm(key)}
           changeGrid={(type) => this.changeGrid(type)}
           algorithm={this.state.algorithm}
-          resetGrid={() => this.generateRandomGrid()}
+          generateNewGrid={() => this.generateRandomGrid()}
+          clearWeightsAndWalls={() => this.clearWeightsAndWalls()}
         />
         {mainGrid.map((row, key) => {
           return (
@@ -374,11 +463,14 @@ export default class Grid extends React.Component {
 // JavaScript functions
 
 const resetGrid = () => {
-  for (let i = 0; i < 25; i++) {
-    for (let j = 0; j < 72; j++) {
+  for (let i = 0; i < gridRows; i++) {
+    for (let j = 0; j < gridCols; j++) {
       // set visited nodes to blank nodes
       let node = document.getElementById(i + "-" + j);
-      if (node.classList.contains("visited") || node.classList.contains("shortestpath")) {
+      if (
+        node.classList.contains("visited") ||
+        node.classList.contains("shortestpath")
+      ) {
         node.className = "grid-square unselected";
       }
     }
@@ -386,8 +478,6 @@ const resetGrid = () => {
 };
 
 // drag and drop functions
-
-/////////////////////////// currently incative //////////////////////////////
 const drag = (id) => (e) => {
   let data = [e.target.id, id];
   e.dataTransfer.setData("data", JSON.stringify(data));
@@ -395,7 +485,7 @@ const drag = (id) => (e) => {
 
 const drop = (id, grid) => (e) => {
   e.preventDefault();
-  var data = JSON.parse(e.dataTransfer.getData("data"));
+  let data = JSON.parse(e.dataTransfer.getData("data"));
   let stringStartId = String(data[1]),
     stringEndId = String(id);
   e.target.appendChild(document.getElementById(data[0]));
@@ -405,7 +495,7 @@ const drop = (id, grid) => (e) => {
     );
 
   if (grid === "unweighted") {
-    if (data === "start") {
+    if (data[0] === "start") {
       unweightedStartNodeX = x;
       unweightedStartNodeY = y;
       document.getElementById(stringEndId).className = "grid-square start";
@@ -418,7 +508,7 @@ const drop = (id, grid) => (e) => {
       .getElementById(stringStartId)
       .classList.replace("end", "unselected");
   } else {
-    if (data === "start") {
+    if (data[0] === "start") {
       weightedStartNodeX = x;
       weightedStartNodeY = y;
       document.getElementById(stringEndId).className = "grid-square start";

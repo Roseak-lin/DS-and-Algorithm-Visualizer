@@ -45,7 +45,7 @@ export default class Settings extends React.Component {
                 </td>
                 <td>
                   <button
-                    className="speed-btn inactive"
+                    className="speed-btn active"
                     onClick={() => this.changeSpeed("med", 1)}
                   >
                     Medium
@@ -53,7 +53,7 @@ export default class Settings extends React.Component {
                 </td>
                 <td>
                   <button
-                    className="speed-btn active"
+                    className="speed-btn inactive"
                     onClick={() => this.changeSpeed("fast", 2)}
                   >
                     Fast

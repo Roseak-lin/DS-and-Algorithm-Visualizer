@@ -6,9 +6,16 @@ import gear from "../Images/gear.png";
 
 export default class NavigationBar extends React.Component {
   render() {
-    const { changeAlgorithm, changeGrid, onClick, resetGrid } = this.props;
+    const {
+      changeAlgorithm,
+      changeGrid,
+      onClick,
+      generateNewGrid,
+      clearWeightsAndWalls,
+    } = this.props;
     return (
       <Nav
+        responsive
         justify
         id="nav"
         style={{ width: 100 + "%" }}
@@ -18,6 +25,10 @@ export default class NavigationBar extends React.Component {
           changeAlgorithm(eventKey);
         }}
       >
+        <Nav.Item>
+          <Nav.Link className="nav-title">Algorithm Visualizer</Nav.Link>
+        </Nav.Item>
+
         <NavDropdown title="Unweighted algorithms">
           <NavDropdown.Item
             eventKey="BFS"
@@ -37,7 +48,7 @@ export default class NavigationBar extends React.Component {
           </NavDropdown.Item>
         </NavDropdown>
 
-        <button id="navbar-btn" onClick={onClick}>
+        <button className="navbar-btn" onClick={onClick}>
           Visualize
           {this.props.algorithm == null ? "" : " " + this.props.algorithm}!
         </button>
@@ -61,9 +72,21 @@ export default class NavigationBar extends React.Component {
           </NavDropdown.Item>
         </NavDropdown>
 
-        <button id="navbar-btn" onClick={resetGrid}>
-          Generate random grid
-        </button>
+        <Nav.Item
+          onClick={() => {
+            generateNewGrid();
+          }}
+        >
+          <Nav.Link>Generate random grid</Nav.Link>
+        </Nav.Item>
+
+        <Nav.Item
+          onClick={() => {
+            clearWeightsAndWalls();
+          }}
+        >
+          <Nav.Link>Clear walls/weights</Nav.Link>
+        </Nav.Item>
 
         <Nav.Item>
           {/* Blank space to seperate settings from algorithms */}

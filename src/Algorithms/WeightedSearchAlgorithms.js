@@ -1,50 +1,101 @@
+const rows = 25;
+const cols = 72;
+
 var visited;
 var previousNode;
 
 export function dijkstra(grid, startX, startY, endX, endY) {
     // reset visited grid and previousNode grid
-    initializeVisited(grid);
-    resetPreviousNode(grid);
+    resetVisited();
+    resetPreviousNode();
     let q = [], path = [];
-    q.push([startX, startY, null]);
+    q.push([startX, startY, null, null, 0]);
     while (!!q.length) {
-        let currentNode = q.shift();
-        if (currentNode[0] < 0 || currentNode[1] < 0 || currentNode[0] >= 72 || currentNode[1] >= 25 || visited[currentNode[1]][[currentNode[0]]]) {
+        let node = q.shift();
+        if (visited[node[1]][[node[0]]]) {
             continue;
         }
 
-        visited[currentNode[1]][currentNode[0]] = true;
-        path.push([currentNode[0], currentNode[1], currentNode[2], currentNode[3]]);
+        visited[node[1]][node[0]] = true;
+        path.push([node[0], node[1], node[2], node[3]]);
 
-        if (currentNode[2] != null && previousNode[currentNode[1]][currentNode[0]] === null) {
-            previousNode[currentNode[1]][currentNode[0]] = [currentNode[2], currentNode[3]];
+        if (node[2] != null && previousNode[node[1]][node[0]] === null) {
+            previousNode[node[1]][node[0]] = [node[2], node[3]];
         }
 
-        if (currentNode[0] === endX && currentNode[1] === endY) {
+        if (node[0] === endX && node[1] === endY) {
             return path;
         }
 
         // pushing second and third element to allow backtracking to highlight the shortest path
-        if (currentNode[0] + 1 <= 71) {
-            q.push([currentNode[0] + 1, currentNode[1], currentNode[0], currentNode[1]]);
+        if (node[0] + 1 < cols) {
+            q.push([node[0] + 1, node[1], node[0], node[1]]);
         }
 
-        if (currentNode[0] - 1 >= 0) {
-            q.push([currentNode[0] - 1, currentNode[1], currentNode[0], currentNode[1]]);
+        if (node[0] - 1 >= 0) {
+            q.push([node[0] - 1, node[1], node[0], node[1]]);
         }
 
-        if (currentNode[1] + 1 <= 24) {
-            q.push([currentNode[0], currentNode[1] + 1, currentNode[0], currentNode[1]]);
+        if (node[1] + 1 < rows) {
+            q.push([node[0], node[1] + 1, node[0], node[1]]);
         }
 
-        if (currentNode[1] - 1 >= 0) {
-            q.push([currentNode[0], currentNode[1] - 1, currentNode[0], currentNode[1]]);
+        if (node[1] - 1 >= 0) {
+            q.push([node[0], node[1] - 1, node[0], node[1]]);
         }
 
         // sort queue to get the next neighbor with the least weight
-        q = sortQueue(q, grid);
+        q.sort((a, b) => {
+            return grid[a[1]][a[0]].weight - grid[b[1]][b[0]].weight;
+        });
     }
     return path;
+}
+
+export function astar (grid, startX, startY, endX, endY) {
+    resetPreviousNode();
+    resetVisited();
+    let q = [], path = [];
+    q.push([startX, startY, null, null, 0]);
+
+    while (!!q.length) {
+        let node = q.shift();
+        if (visited[node[1]][node[0]]) {
+            continue;
+        }
+
+        visited[node[1]][node[0]] = true;
+        path.push([node[0], node[1], node[2], node[3]]);
+        if (node[2] != null && previousNode[node[1]][node[0]] === null) {
+            previousNode[node[1]][node[0]] = [node[2], node[3]];
+        }
+        
+        if (node[0] === endX && node[1] === endY) {
+            return path;
+        }
+
+
+        if (node[0] + 1 < cols) {
+            q.push([node[0] + 1, node[1], node[0], node[1], node[4] + grid[node[1]][node[0]].weight]);
+        }
+
+        if (node[0] - 1 >= 0) {
+            q.push([node[0] - 1, node[1], node[0], node[1], node[4] + grid[node[1]][node[0]].weight]);
+        }
+
+        if (node[1] + 1 < rows) {
+            q.push([node[0], node[1] + 1, node[0], node[1], node[4] + grid[node[1]][node[0]].weight]);
+        }
+
+        if (node[1] - 1 >= 0) {
+            q.push([node[0], node[1] - 1, node[0], node[1], node[4] + grid[node[1]][node[0]].weight]);
+        }
+
+        // sort by path weight and manhatten distance
+        q.sort((a, b) => {
+            return (a[4] + (Math.abs(a[1] - endY) + Math.abs(a[0] - endX))) - (b[4] + (Math.abs(b[1] - endY) + Math.abs(b[0] - endX)));
+        });
+    }
 }
 
 // function that will return the shortest path
@@ -66,31 +117,23 @@ export function weightedShortestPath(startX, startY, path) {
     return shortestPath;
 }
 
-// sorting the queue such that it behaves like a priority queue
-function sortQueue(arr, grid) {
-    arr.sort((a, b) => {
-        return grid[a[1]][a[0]].weight - grid[b[1]][b[0]].weight;
-    });
-    return arr;
-}
-
 // method that re initializes the visited 
-function initializeVisited(grid) {
+function resetVisited() {
     visited = [];
-    for (let i = 0; i < grid.length; i++) {
+    for (let i = 0; i < rows; i++) {
         visited.push([]);
-        for (let j = 0; j < grid[i].length; j++) {
+        for (let j = 0; j < cols; j++) {
             visited[i].push(false);
         }
     }
 }
 
 // function to reset grid that helps with finding the shortest path
-function resetPreviousNode(grid) {
+function resetPreviousNode() {
     previousNode = [];
-    for (let i = 0; i < grid.length; i++) {
+    for (let i = 0; i < rows; i++) {
         previousNode.push([]);
-        for (let j = 0; j < grid[i].length; j++) {
+        for (let j = 0; j < cols; j++) {
             previousNode[i].push(null);
         }
     }

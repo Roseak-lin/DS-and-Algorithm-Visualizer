@@ -10,14 +10,15 @@
 .grid-square {
     display: inline-block;
     background-color: transparent;
-    border: 0.05vw solid rgb(77, 77, 77, 0.5);
+    border: 1px solid rgb(77, 77, 77, 0.5);
     width: 1.25vw;
     height: 1.25vw;
-    font-size: 0.8vw;
+    font-size: 0.75vw;
     text-align: center;
     overflow: hidden;
     padding: 0;
     margin: 0;
+    user-select: none;
 }
 
 .grid-square:hover {
@@ -82,17 +83,13 @@
 }
 
 .grid-square.selected {
-    background-color: #ED553B;
+    background-color: #28b0ff;
     transition: 0.3s;
 }
 
 .grid-square.unselected {
     color: #000;
     background-color: transparent;
-}
-
-.grid-square.start:hover, .grid-square.end:hover {
-    cursor: grab;
 }
 
 .grid-square.start, .grid-square.end {
@@ -102,8 +99,19 @@
 .grid-square.visited {
     animation: visit-square 0.3s;
     color: #fff;
-    background-color: #173F5F;
+    background-color: #153e90;
     border: 1px solid rgb(255, 255, 255, 0.5);
+}
+
+@keyframes visit-square {
+    from {
+        background-color: #fffb00;
+        border: 0.05vw solid rgb(77, 77, 77, 0.5);
+    }
+    to {
+        background-color: #153e90;
+        border: 0.05vw solid rgb(255, 255, 255, 0.5);
+    }
 }
 
 .grid-square.shortestpath {
@@ -114,6 +122,7 @@
 }
 
 #start {
+    background-color: white;
     margin: 0;
     float: left;
     width: 1.1vw;
@@ -121,21 +130,15 @@
 }
 
 #end {
+    background-color: white;
     margin: 0;
     float: left;
     width: 1.1vw;
     height: 1.1vw;
 }
 
-@keyframes visit-square {
-    from {
-        background-color: #35aeff;
-        border: 0.05vw solid rgb(77, 77, 77, 0.5);
-    }
-    to {
-        background-color: #173F5F;
-        border: 0.05vw solid rgb(255, 255, 255, 0.5);
-    }
+#start:hover, #end:hover {
+    cursor: grab;
 }
 
 /* Nav bar */
@@ -143,14 +146,20 @@
 #nav {
     margin-top: 0.5em;
     margin-bottom: 1em;
+    align-items: center;
 }
 
-#navbar-btn {
+.nav-title {
+    font-size: 1.5em;
+}
+
+.navbar-btn {
     margin: 0 0.25em 0 0.25em;
     border-radius: 0.5em;
     background-color: #39bffd;
     color: #fff;
     border: none;
+    height: 2em;
 }
 
 .nav-link {
@@ -174,6 +183,7 @@
     border-radius: 0.25em;
     border: 1px solid #000;
     background-color: #fff;
+    height: 2.5em;
 }
 
 #gear {

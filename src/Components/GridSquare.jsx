@@ -22,7 +22,7 @@ export default class Square extends React.Component {
         <div className={className} id={id}>
           <img
             src={right_arrow}
-            draggable={false}
+            draggable={true}
             onDragStart={(event) => {
               drag(event);
             }}
@@ -37,7 +37,7 @@ export default class Square extends React.Component {
         <div className={className} id={id}>
           <img
             src={circle}
-            draggable={false}
+            draggable={true}
             onDragStart={(event) => {
               drag(event);
             }}
