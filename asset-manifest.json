@@ -1,19 +1,19 @@
 {
   "files": {
-    "main.css": "/DS-and-Algorithm-Visualizer/static/css/main.d683e2db.chunk.css",
-    "main.js": "/DS-and-Algorithm-Visualizer/static/js/main.91708042.chunk.js",
-    "main.js.map": "/DS-and-Algorithm-Visualizer/static/js/main.91708042.chunk.js.map",
+    "main.css": "/DS-and-Algorithm-Visualizer/static/css/main.ac5f9ec5.chunk.css",
+    "main.js": "/DS-and-Algorithm-Visualizer/static/js/main.6e6832bf.chunk.js",
+    "main.js.map": "/DS-and-Algorithm-Visualizer/static/js/main.6e6832bf.chunk.js.map",
     "runtime-main.js": "/DS-and-Algorithm-Visualizer/static/js/runtime-main.d4aa301a.js",
     "runtime-main.js.map": "/DS-and-Algorithm-Visualizer/static/js/runtime-main.d4aa301a.js.map",
     "static/css/2.4c97ca4f.chunk.css": "/DS-and-Algorithm-Visualizer/static/css/2.4c97ca4f.chunk.css",
-    "static/js/2.042f618e.chunk.js": "/DS-and-Algorithm-Visualizer/static/js/2.042f618e.chunk.js",
-    "static/js/2.042f618e.chunk.js.map": "/DS-and-Algorithm-Visualizer/static/js/2.042f618e.chunk.js.map",
+    "static/js/2.26a21b14.chunk.js": "/DS-and-Algorithm-Visualizer/static/js/2.26a21b14.chunk.js",
+    "static/js/2.26a21b14.chunk.js.map": "/DS-and-Algorithm-Visualizer/static/js/2.26a21b14.chunk.js.map",
     "static/js/3.5381b45e.chunk.js": "/DS-and-Algorithm-Visualizer/static/js/3.5381b45e.chunk.js",
     "static/js/3.5381b45e.chunk.js.map": "/DS-and-Algorithm-Visualizer/static/js/3.5381b45e.chunk.js.map",
     "index.html": "/DS-and-Algorithm-Visualizer/index.html",
     "static/css/2.4c97ca4f.chunk.css.map": "/DS-and-Algorithm-Visualizer/static/css/2.4c97ca4f.chunk.css.map",
-    "static/css/main.d683e2db.chunk.css.map": "/DS-and-Algorithm-Visualizer/static/css/main.d683e2db.chunk.css.map",
-    "static/js/2.042f618e.chunk.js.LICENSE.txt": "/DS-and-Algorithm-Visualizer/static/js/2.042f618e.chunk.js.LICENSE.txt",
+    "static/css/main.ac5f9ec5.chunk.css.map": "/DS-and-Algorithm-Visualizer/static/css/main.ac5f9ec5.chunk.css.map",
+    "static/js/2.26a21b14.chunk.js.LICENSE.txt": "/DS-and-Algorithm-Visualizer/static/js/2.26a21b14.chunk.js.LICENSE.txt",
     "static/media/arrow_right.91c92c08.jpg": "/DS-and-Algorithm-Visualizer/static/media/arrow_right.91c92c08.jpg",
     "static/media/circle.abb2dcd5.png": "/DS-and-Algorithm-Visualizer/static/media/circle.abb2dcd5.png",
     "static/media/gear.8ecc30fe.png": "/DS-and-Algorithm-Visualizer/static/media/gear.8ecc30fe.png"
@@ -21,8 +21,8 @@
   "entrypoints": [
     "static/js/runtime-main.d4aa301a.js",
     "static/css/2.4c97ca4f.chunk.css",
-    "static/js/2.042f618e.chunk.js",
-    "static/css/main.d683e2db.chunk.css",
-    "static/js/main.91708042.chunk.js"
+    "static/js/2.26a21b14.chunk.js",
+    "static/css/main.ac5f9ec5.chunk.css",
+    "static/js/main.6e6832bf.chunk.js"
   ]
 }
