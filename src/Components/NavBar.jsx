@@ -15,7 +15,6 @@ export default class NavigationBar extends React.Component {
     } = this.props;
     return (
       <Nav
-        responsive
         justify
         id="nav"
         style={{ width: 100 + "%" }}

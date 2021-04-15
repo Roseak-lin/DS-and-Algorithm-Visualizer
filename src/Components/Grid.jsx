@@ -276,6 +276,7 @@ export default class Grid extends React.Component {
   }
 
   changeSpeed(speed) {
+
     if (speed === "slow") {
       this.setState({ speed: 30 });
     } else if (speed === "med") {
@@ -288,8 +289,12 @@ export default class Grid extends React.Component {
   changeGrid(type) {
     resetGrid();
     if (type === "weighted" && this.state.currGrid === "unweighted") {
-      document.getElementById(unweightedStartNodeY + "-" + unweightedStartNodeX).classList.replace("start", "unselected");
-      document.getElementById(unweightedEndNodeY + "-" + unweightedEndNodeX).classList.replace("end", "unselected");
+      document
+        .getElementById(unweightedStartNodeY + "-" + unweightedStartNodeX)
+        .classList.replace("start", "unselected");
+      document
+        .getElementById(unweightedEndNodeY + "-" + unweightedEndNodeX)
+        .classList.replace("end", "unselected");
       document
         .getElementById(weightedStartNodeY + "-" + weightedStartNodeX)
         .appendChild(document.getElementById("start"));
@@ -303,8 +308,12 @@ export default class Grid extends React.Component {
         currGrid: "weighted",
       });
     } else if (type === "unweighted" && this.state.currGrid === "weighted") {
-      document.getElementById(weightedStartNodeY + "-" + weightedStartNodeX).classList.replace("start", "unselected");
-      document.getElementById(weightedEndNodeY + "-" + weightedEndNodeX).classList.replace("end", "unselected");
+      document
+        .getElementById(weightedStartNodeY + "-" + weightedStartNodeX)
+        .classList.replace("start", "unselected");
+      document
+        .getElementById(weightedEndNodeY + "-" + weightedEndNodeX)
+        .classList.replace("end", "unselected");
       document
         .getElementById(unweightedStartNodeY + "-" + unweightedStartNodeX)
         .appendChild(document.getElementById("start"));

@@ -2,11 +2,9 @@ import React from "react";
 
 import Table from "react-bootstrap/Table";
 
-var active = 2;
+var active = 1;
 
 export default class Settings extends React.Component {
-
-
   close() {
     document.getElementById("settings-bg").style.display = "none";
   }
@@ -16,12 +14,15 @@ export default class Settings extends React.Component {
       .getElementsByClassName("speed-btn")
       [button].classList.replace("inactive", "active");
     document.getElementsByClassName("speed-btn")[active].classList.replace("active", "inactive");
+    
     this.props.changeSpeed(speed);
+    console.log(speed + " " + button);
     
     // swap the active button
     let temp = active;
     active = button;
     button = temp;
+
   }
 
   render() {
