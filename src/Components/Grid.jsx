@@ -1,4 +1,5 @@
 import React from "react";
+import $ from "jquery";
 import Square from "./GridSquare";
 import NavigationBar from "./NavBar";
 
@@ -136,7 +137,7 @@ export default class Grid extends React.Component {
 
   /********************* Unweighted algorithms *********************/
   animateBFS(grid) {
-    document.getElementsByClassName("grid")[0].style.pointerEvents = "none";
+    $(".grid").css("pointer-events", "none");
     const path = bfs(
       grid,
       unweightedStartNodeX,
@@ -150,11 +151,11 @@ export default class Grid extends React.Component {
       setTimeout(() => {
         // visited[i][0] = x coorinate, visited[i][1] = y coordiante
         let id = path[i][1] + "-" + path[i][0];
-        document.getElementById(id).className = "grid-square visited";
+        $("#" + id).addClass("visited");
       }, speed * i);
     }
     setTimeout(() => {
-      document.getElementsByClassName("grid")[0].style.pointerEvents = "auto";
+      $(".grid").css("pointer-events", "auto");
       drawUnweightedShortestPath(
         unweightedStartNodeX,
         unweightedStartNodeY,
@@ -167,7 +168,7 @@ export default class Grid extends React.Component {
   }
 
   animateDFS(grid) {
-    document.getElementsByClassName("grid")[0].style.pointerEvents = "none";
+    $(".grid").css("pointer-events", "none");
     const path = dfs(
       grid,
       unweightedStartNodeX,
@@ -181,11 +182,11 @@ export default class Grid extends React.Component {
       setTimeout(() => {
         // visited[i][0] = x coorinate, visited[i][1] = y coordiante
         let id = path[i][1] + "-" + path[i][0];
-        document.getElementById(id).className = "grid-square visited";
+        $("#" + id).addClass("visited");
       }, speed * i);
     }
     setTimeout(() => {
-      document.getElementsByClassName("grid")[0].style.pointerEvents = "auto";
+      $(".grid").css("pointer-events", "auto");
       drawUnweightedShortestPath(
         unweightedStartNodeX,
         unweightedStartNodeY,
@@ -199,7 +200,7 @@ export default class Grid extends React.Component {
 
   /********************* Weighted algorithms *********************/
   animateDijkstra(grid) {
-    document.getElementsByClassName("grid")[0].style.pointerEvents = "none";
+    $(".grid").css("pointer-events", "none");
     const path = dijkstra(
       grid,
       weightedStartNodeX,
@@ -213,18 +214,18 @@ export default class Grid extends React.Component {
       setTimeout(() => {
         // visited[i][0] = x coorinate, visited[i][1] = y coordiante
         let id = path[i][1] + "-" + path[i][0];
-        document.getElementById(id).className = "grid-square visited";
+        $("#" + id).addClass("visited");
       }, speed * i);
     }
 
     setTimeout(() => {
-      document.getElementsByClassName("grid")[0].style.pointerEvents = "auto";
+      $(".grid").css("pointer-events", "auto");
       drawWeightedShortestPath(weightedEndNodeX, weightedEndNodeY, speed, path);
     }, path.length * speed);
   }
 
   animateAstar(grid) {
-    document.getElementsByClassName("grid")[0].style.pointerEvents = "none";
+    $(".grid").css("pointer-events", "none");
     const path = astar(
       grid,
       weightedStartNodeX,
@@ -238,12 +239,12 @@ export default class Grid extends React.Component {
     for (let i = 1; i < path.length - 1; i++) {
       setTimeout(() => {
         let id = path[i][1] + "-" + path[i][0];
-        document.getElementById(id).className = "grid-square visited";
+        $("#" + id).addClass("visited");
       }, speed * i);
     }
 
     setTimeout(() => {
-      document.getElementsByClassName("grid")[0].style.pointerEvents = "auto";
+      $(".grid").css("pointer-events", "auto");
       drawWeightedShortestPath(weightedEndNodeX, weightedEndNodeY, speed, path);
     }, speed * path.length);
   }
@@ -266,7 +267,7 @@ export default class Grid extends React.Component {
         this.animateAstar(mainGrid);
         break;
       default:
-        document.getElementById("popup").style.display = "block";
+        $("#popup").fadeIn(150);
         break;
     }
   }
@@ -276,7 +277,6 @@ export default class Grid extends React.Component {
   }
 
   changeSpeed(speed) {
-
     if (speed === "slow") {
       this.setState({ speed: 30 });
     } else if (speed === "med") {
@@ -295,12 +295,9 @@ export default class Grid extends React.Component {
       document
         .getElementById(unweightedEndNodeY + "-" + unweightedEndNodeX)
         .classList.replace("end", "unselected");
-      document
-        .getElementById(weightedStartNodeY + "-" + weightedStartNodeX)
-        .appendChild(document.getElementById("start"));
-      document
-        .getElementById(weightedEndNodeY + "-" + weightedEndNodeX)
-        .appendChild(document.getElementById("end"));
+
+      $("#" + weightedStartNodeY + "-" + weightedStartNodeX).append($("#start"));
+      $("#" + weightedEndNodeY + "-" + weightedEndNodeX).append($("#end"));
 
       this.setState({
         unweightedGrid: this.state.mainGrid,
@@ -314,12 +311,13 @@ export default class Grid extends React.Component {
       document
         .getElementById(weightedEndNodeY + "-" + weightedEndNodeX)
         .classList.replace("end", "unselected");
-      document
-        .getElementById(unweightedStartNodeY + "-" + unweightedStartNodeX)
-        .appendChild(document.getElementById("start"));
-      document
-        .getElementById(unweightedEndNodeY + "-" + unweightedEndNodeX)
-        .appendChild(document.getElementById("end"));
+
+      $("#" + unweightedStartNodeY + "-" + unweightedStartNodeX).append(
+        $("#start")
+      );
+      $("#" + unweightedEndNodeY + "-" + unweightedEndNodeX).append(
+        $("#end")
+      );
 
       this.setState({
         weightedGrid: this.state.mainGrid,
@@ -433,14 +431,14 @@ export default class Grid extends React.Component {
     this.setState({ mainGrid: grid });
   }
 
-  // Render ///////////////////////////////////////////////////
+  /////////////////// Render //////////////////////////
   render() {
     const { mainGrid } = this.state;
     return (
       <div className="grid" align="center">
         <Settings changeSpeed={(speed) => this.changeSpeed(speed)} />
         <NavigationBar
-          onClick={this.visualizeAlgorithm}
+          onClick={() => this.visualizeAlgorithm()}
           changeAlgorithm={(key) => this.changeAlgorithm(key)}
           changeGrid={(type) => this.changeGrid(type)}
           algorithm={this.state.algorithm}
@@ -495,6 +493,10 @@ const drag = (id) => (e) => {
 const drop = (id, grid) => (e) => {
   e.preventDefault();
   let data = JSON.parse(e.dataTransfer.getData("data"));
+
+  // stringStartId represents the id of the node that the item was initially dragged from 
+  // stringEndId represents the node where data is being dropped
+
   let stringStartId = String(data[1]),
     stringEndId = String(id);
   e.target.appendChild(document.getElementById(data[0]));
@@ -521,6 +523,7 @@ const drop = (id, grid) => (e) => {
       weightedStartNodeX = x;
       weightedStartNodeY = y;
       document.getElementById(stringEndId).className = "grid-square start";
+      console.log(unweightedStartNodeX + " " + unweightedStartNodeY)
     } else {
       weightedEndNodeX = x;
       weightedEndNodeY = y;

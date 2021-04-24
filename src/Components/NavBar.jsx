@@ -1,10 +1,12 @@
 import React from "react";
+import $ from "jquery";
 
 import Nav from "react-bootstrap/Nav";
 import NavDropdown from "react-bootstrap/NavDropdown";
 import gear from "../Images/gear.png";
 
 export default class NavigationBar extends React.Component {
+  
   render() {
     const {
       changeAlgorithm,
@@ -91,14 +93,12 @@ export default class NavigationBar extends React.Component {
           {/* Blank space to seperate settings from algorithms */}
         </Nav.Item>
 
-        <button id="settings-btn" onClick={displaySettings}>
+        <button id="settings-btn" onClick={() => {
+          $("#settings-bg").fadeIn(150);
+        }}>
           <img src={gear} alt="settings" id="gear" />
         </button>
       </Nav>
     );
   }
 }
-
-const displaySettings = () => {
-  document.getElementById("settings-bg").style.display = "block";
-};

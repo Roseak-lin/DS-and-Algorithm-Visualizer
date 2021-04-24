@@ -1,35 +1,38 @@
 import React from "react";
+import $ from "jquery";
 
 import Table from "react-bootstrap/Table";
 
 var active = 1;
 
 export default class Settings extends React.Component {
-  close() {
-    document.getElementById("settings-bg").style.display = "none";
-  }
-
   changeSpeed(speed, button) {
     document
       .getElementsByClassName("speed-btn")
       [button].classList.replace("inactive", "active");
-    document.getElementsByClassName("speed-btn")[active].classList.replace("active", "inactive");
-    
+    document
+      .getElementsByClassName("speed-btn")
+      [active].classList.replace("active", "inactive");
+
     this.props.changeSpeed(speed);
     console.log(speed + " " + button);
-    
+
     // swap the active button
     let temp = active;
     active = button;
     button = temp;
-
   }
 
   render() {
     return (
       <div id="settings-bg">
         <div id="settings">
-          <span id="settings-close" onClick={this.close}>
+          <span
+            id="settings-close"
+            onClick={() => {
+              $("#settings-bg").fadeOut(150);
+            }}
+          >
             &times;
           </span>
           <Table borderless responsive="lg">

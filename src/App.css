@@ -39,16 +39,6 @@
     overflow: auto;
     background-color: rgba(0, 0, 0, 0.3);
     opacity: 1;
-    animation: popup-animation 0.25s;
-}
-
-@keyframes popup-animation {
-    from {
-        opacity: 0;
-    }
-    to {
-        opacity: 1;
-    }
 }
 
 #popup-text {
@@ -84,7 +74,7 @@
 
 .grid-square.selected {
     background-color: #28b0ff;
-    transition: 0.3s;
+    transition: 0.5s;
 }
 
 .grid-square.unselected {
@@ -218,7 +208,6 @@
     overflow: auto;
     background-color: rgba(0, 0, 0, 0.3);
     opacity: 1;
-    animation: popup-animation 0.25s;
 }
 
 @keyframes popup-animation {
