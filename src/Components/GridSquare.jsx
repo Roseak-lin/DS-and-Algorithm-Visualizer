@@ -4,22 +4,31 @@ import circle from "../Images/circle.png";
 
 export default class Square extends React.Component {
   render() {
-    const {
+    let {
       x,
       y,
       className,
       id,
       handleClick,
-      isStart,
-      isEnd,
       drag,
       drop,
       weight,
+      dragAndDropUpdate,
     } = this.props;
 
-    if (isStart) {
+    if (x === 5 && y === 12) {
       return (
-        <div className={className} id={id}>
+        <div
+          className={className}
+          onClick={() => handleClick(x, y)}
+          id={id}
+          onDrop={(event) => {
+            drop(event);
+            dragAndDropUpdate(event, id);
+          }}
+          onDragOver={(event) => event.preventDefault()}
+          weight={weight}
+        >
           <img
             src={right_arrow}
             draggable={true}
@@ -32,9 +41,19 @@ export default class Square extends React.Component {
           />
         </div>
       );
-    } else if (isEnd) {
+    } else if (x === 66 && y === 12) {
       return (
-        <div className={className} id={id}>
+        <div
+          className={className}
+          onClick={() => handleClick(x, y)}
+          id={id}
+          onDrop={(event) => {
+            drop(event);
+            dragAndDropUpdate(event, id);
+          }}
+          onDragOver={(event) => event.preventDefault()}
+          weight={weight}
+        >
           <img
             src={circle}
             draggable={true}
@@ -55,6 +74,7 @@ export default class Square extends React.Component {
           id={id}
           onDrop={(event) => {
             drop(event);
+            dragAndDropUpdate(event, id);
           }}
           onDragOver={(event) => event.preventDefault()}
           weight={weight}

@@ -35,8 +35,6 @@ export default class Grid extends React.Component {
       algorithm: null,
       speed: 20,
     };
-
-    this.visualizeAlgorithm = this.visualizeAlgorithm.bind(this);
   }
 
   componentDidMount() {
@@ -45,21 +43,15 @@ export default class Grid extends React.Component {
     for (let i = 0; i < gridRows; i++) {
       grid.push([]);
       for (let j = 0; j < gridCols; j++) {
-        let isStart = i === unweightedStartNodeY && j === unweightedStartNodeX,
-          isEnd = i === unweightedEndNodeY && j === unweightedEndNodeX,
-          className;
+        let className;
         if (i === unweightedStartNodeY && j === unweightedStartNodeX) {
-          isStart = true;
           className = "grid-square start";
         } else if (i === unweightedEndNodeY && j === unweightedEndNodeX) {
-          isEnd = true;
           className = "grid-square end";
         } else {
           className = "grid-square unselected";
         }
         grid[i].push({
-          isStart: isStart,
-          isEnd: isEnd,
           y: i,
           x: j,
           id: i + "-" + j,
@@ -78,21 +70,15 @@ export default class Grid extends React.Component {
     for (let i = 0; i < gridRows; i++) {
       grid.push([]);
       for (let j = 0; j < gridCols; j++) {
-        let isStart = i === weightedStartNodeY && j === weightedStartNodeX,
-          isEnd = i === weightedEndNodeY && j === weightedEndNodeX,
-          className;
+        let className;
         if (i === weightedStartNodeY && j === weightedStartNodeX) {
-          isStart = true;
           className = "grid-square start";
         } else if (i === weightedEndNodeY && j === weightedEndNodeX) {
-          isEnd = true;
           className = "grid-square end";
         } else {
           className = "grid-square unselected";
         }
         grid[i].push({
-          isStart: isStart,
-          isEnd: isEnd,
           y: i,
           x: j,
           id: i + "-" + j,
@@ -105,35 +91,26 @@ export default class Grid extends React.Component {
   }
 
   handleClick(x, y) {
-    if (
-      (x === unweightedStartNodeX && y === unweightedStartNodeY) ||
-      (x === unweightedEndNodeX && y === unweightedEndNodeY)
-    ) {
-      return;
-    }
     let newGrid = this.state.mainGrid.slice();
-    let node = newGrid[y][x];
 
     if (this.state.currGrid === "unweighted") {
-      const newSquare = {
-        ...node,
-        isWall: !node.isWall,
-        className: node.isWall
+      newGrid[y][x] = {
+        ...newGrid[y][x],
+        isWall: !newGrid[y][x].isWall,
+        className: newGrid[y][x].isWall
           ? "grid-square unselected"
           : "grid-square selected",
       };
-      newGrid[y][x] = newSquare;
     } else {
-      const newSquare = {
-        ...node,
-        weight: node.weight + 1 === 5 ? 0 : node.weight + 1,
+      newGrid[y][x] = {
+        ...newGrid[y][x],
+        weight: newGrid[y][x].weight + 1 === 5 ? 0 : newGrid[y][x].weight + 1,
       };
-      newGrid[y][x] = newSquare;
     }
     this.setState({ mainGrid: newGrid });
   }
 
-  ///////////////////////////// algorithm animations //////////////////////////////////////////////
+  ///////////////////////////// algorithm animations /////////////////////////////
 
   /********************* Unweighted algorithms *********************/
   animateBFS(grid) {
@@ -296,7 +273,9 @@ export default class Grid extends React.Component {
         .getElementById(unweightedEndNodeY + "-" + unweightedEndNodeX)
         .classList.replace("end", "unselected");
 
-      $("#" + weightedStartNodeY + "-" + weightedStartNodeX).append($("#start"));
+      $("#" + weightedStartNodeY + "-" + weightedStartNodeX).append(
+        $("#start")
+      );
       $("#" + weightedEndNodeY + "-" + weightedEndNodeX).append($("#end"));
 
       this.setState({
@@ -315,9 +294,7 @@ export default class Grid extends React.Component {
       $("#" + unweightedStartNodeY + "-" + unweightedStartNodeX).append(
         $("#start")
       );
-      $("#" + unweightedEndNodeY + "-" + unweightedEndNodeX).append(
-        $("#end")
-      );
+      $("#" + unweightedEndNodeY + "-" + unweightedEndNodeX).append($("#end"));
 
       this.setState({
         weightedGrid: this.state.mainGrid,
@@ -344,26 +321,21 @@ export default class Grid extends React.Component {
             : "grid-square unselected";
         }
       }
-      if (this.state.currGrid === "unweighted") {
-        this.setState({ mainGrid: grid });
-      } else {
-        this.setState({ unweightedGrid: grid });
-      }
+      this.setState({ mainGrid: grid });
     } else {
       for (let i = 0; i < gridRows; i++) {
         for (let j = 0; j < gridCols; j++) {
-          if (i === weightedEndNodeY && j === weightedEndNodeX) {
+          if (
+            (i === weightedStartNodeY && j === weightedStartNodeX) ||
+            (i === weightedEndNodeY && j === weightedEndNodeX)
+          ) {
             grid[i][j].weight = 0;
             continue;
           }
           grid[i][j].weight = Math.trunc(Math.random() * 5);
         }
       }
-      if (this.state.currGrid === "weighted") {
-        this.setState({ mainGrid: grid });
-      } else {
-        this.setState({ weightedGrid: grid });
-      }
+      this.setState({ mainGrid: grid });
     }
   }
 
@@ -373,51 +345,15 @@ export default class Grid extends React.Component {
       for (let i = 0; i < gridRows; i++) {
         grid.push([]);
         for (let j = 0; j < gridCols; j++) {
-          let isStart =
-              i === unweightedStartNodeY && j === unweightedStartNodeX,
-            isEnd = i === unweightedEndNodeY && j === unweightedEndNodeX,
-            className;
+          let className;
           if (i === unweightedStartNodeY && j === unweightedStartNodeX) {
-            isStart = true;
             className = "grid-square start";
           } else if (i === unweightedEndNodeY && j === unweightedEndNodeX) {
-            isEnd = true;
             className = "grid-square end";
           } else {
             className = "grid-square unselected";
           }
           grid[i].push({
-            isStart: isStart,
-            isEnd: isEnd,
-            y: i,
-            x: j,
-            id: i + "-" + j,
-            isWall: false,
-            weight: 0,
-            className: className,
-          });
-        }
-      }
-    } else {
-      for (let i = 0; i < gridRows; i++) {
-        grid.push([]);
-        for (let j = 0; j < gridCols; j++) {
-          let isStart =
-              i === unweightedStartNodeY && j === unweightedStartNodeX,
-            isEnd = i === unweightedEndNodeY && j === unweightedEndNodeX,
-            className;
-          if (i === unweightedStartNodeY && j === unweightedStartNodeX) {
-            isStart = true;
-            className = "grid-square start";
-          } else if (i === unweightedEndNodeY && j === unweightedEndNodeX) {
-            isEnd = true;
-            className = "grid-square end";
-          } else {
-            className = "grid-square unselected";
-          }
-          grid[i].push({
-            isStart: isStart,
-            isEnd: isEnd,
             y: i,
             x: j,
             id: i + "-" + j,
@@ -427,11 +363,52 @@ export default class Grid extends React.Component {
           });
         }
       }
+    } else {
+      for (let i = 0; i < gridRows; i++) {
+        grid.push([]);
+        for (let j = 0; j < gridCols; j++) {
+          let className;
+          if (i === unweightedStartNodeY && j === unweightedStartNodeX) {
+            className = "grid-square start";
+          } else if (i === unweightedEndNodeY && j === unweightedEndNodeX) {
+            className = "grid-square end";
+          } else {
+            className = "grid-square unselected";
+          }
+          grid[i].push({
+            y: i,
+            x: j,
+            id: i + "-" + j,
+            isWall: false,
+            weight: 0,
+            className: className,
+          });
+        }
+      }
     }
     this.setState({ mainGrid: grid });
   }
 
-  /////////////////// Render //////////////////////////
+  dragAndDropUpdate(e, id) {
+    let newGrid = this.state.mainGrid.slice();
+
+    // eX = endX, eY = endY
+
+    let eY = id.substring(0, id.indexOf("-"));
+    let eX = id.substring(id.indexOf("-") + 1, id.length);
+
+    if (newGrid[eY][eX].isWall) {
+      newGrid[eY][eX] = { ...newGrid[eY][eX], isWall: false };
+    }
+
+    if (newGrid[eY][eX].weight !== null && newGrid[eY][eX].weight !== 0) {
+      newGrid[eY][eX].weight = 0;
+    }
+
+    this.setState({ mainGrid: newGrid });
+  }
+
+  /////////////////// Render ///////////////////
   render() {
     const { mainGrid } = this.state;
     return (
@@ -453,9 +430,10 @@ export default class Grid extends React.Component {
                   <Square
                     {...node}
                     handleClick={(j, i) => this.handleClick(j, i)}
-                    drag={drag(node.id)}
+                    drag={drag()}
                     drop={drop(node.id, this.state.currGrid)}
                     key={key}
+                    dragAndDropUpdate={(e, id) => this.dragAndDropUpdate(e, id)}
                   />
                 );
               })}
@@ -485,8 +463,8 @@ const resetGrid = () => {
 };
 
 // drag and drop functions
-const drag = (id) => (e) => {
-  let data = [e.target.id, id];
+const drag = () => (e) => {
+  let data = [e.target.id, e.target.parentNode.id];
   e.dataTransfer.setData("data", JSON.stringify(data));
 };
 
@@ -494,43 +472,50 @@ const drop = (id, grid) => (e) => {
   e.preventDefault();
   let data = JSON.parse(e.dataTransfer.getData("data"));
 
-  // stringStartId represents the id of the node that the item was initially dragged from 
+  // stringStartId represents the id of the node that the item was initially dragged from
   // stringEndId represents the node where data is being dropped
 
   let stringStartId = String(data[1]),
     stringEndId = String(id);
-  e.target.appendChild(document.getElementById(data[0]));
+  $("#" + stringEndId).empty();
   let y = parseInt(stringEndId.substring(0, stringEndId.indexOf("-"))),
     x = parseInt(
       stringEndId.substring(stringEndId.indexOf("-") + 1, stringEndId.length)
     );
+  e.target.appendChild(document.getElementById(data[0]));
 
   if (grid === "unweighted") {
     if (data[0] === "start") {
       unweightedStartNodeX = x;
       unweightedStartNodeY = y;
-      document.getElementById(stringEndId).className = "grid-square start";
+      $("#" + stringEndId).attr({ class: "grid-square start" });
+      document
+        .getElementById(stringStartId)
+        .classList.replace("start", "unselected");
     } else {
       unweightedEndNodeX = x;
       unweightedEndNodeY = y;
-      document.getElementById(stringEndId).className = "grid-square end";
+      $("#" + stringEndId).attr({ class: "grid-square end" });
+      document
+        .getElementById(stringStartId)
+        .classList.replace("end", "unselected");
     }
-    document
-      .getElementById(stringStartId)
-      .classList.replace("end", "unselected");
   } else {
     if (data[0] === "start") {
       weightedStartNodeX = x;
       weightedStartNodeY = y;
-      document.getElementById(stringEndId).className = "grid-square start";
-      console.log(unweightedStartNodeX + " " + unweightedStartNodeY)
+      $("#" + stringEndId).attr({ class: "grid-square start" });
+
+      document
+        .getElementById(stringStartId)
+        .classList.replace("start", "unselected");
     } else {
       weightedEndNodeX = x;
       weightedEndNodeY = y;
-      document.getElementById(stringEndId).className = "grid-square end";
+      $("#" + stringEndId).attr({ class: "grid-square end" });
+      document
+        .getElementById(stringStartId)
+        .classList.replace("end", "unselected");
     }
-    document
-      .getElementById(stringStartId)
-      .classList.replace("end", "unselected");
   }
 };
