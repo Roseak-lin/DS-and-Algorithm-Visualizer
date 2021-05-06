@@ -3,12 +3,16 @@ import $ from "jquery";
 import Square from "./GridSquare";
 import NavigationBar from "./NavBar";
 
-import { bfs, dfs } from "../Algorithms/UnweightedSearchAlgorithms";
-import { dijkstra, astar } from "../Algorithms/WeightedSearchAlgorithms";
 import {
-  drawUnweightedShortestPath,
-  drawWeightedShortestPath,
-} from "../Grid-Functions/PathDrawing";
+  bfs,
+  dfs,
+  unweightedShortestPath,
+} from "../Algorithms/UnweightedSearchAlgorithms";
+import {
+  dijkstra,
+  astar,
+  weightedShortestPath,
+} from "../Algorithms/WeightedSearchAlgorithms";
 import Settings from "./Settings";
 
 const gridRows = 25;
@@ -43,10 +47,13 @@ export default class Grid extends React.Component {
     for (let i = 0; i < gridRows; i++) {
       grid.push([]);
       for (let j = 0; j < gridCols; j++) {
+        let isStart, isEnd;
         let className;
         if (i === unweightedStartNodeY && j === unweightedStartNodeX) {
+          isStart = true;
           className = "grid-square start";
         } else if (i === unweightedEndNodeY && j === unweightedEndNodeX) {
+          isEnd = true;
           className = "grid-square end";
         } else {
           className = "grid-square unselected";
@@ -56,6 +63,8 @@ export default class Grid extends React.Component {
           x: j,
           id: i + "-" + j,
           isWall: false,
+          isStart: isStart,
+          isEnd: isEnd,
           weight: null,
           className: className,
         });
@@ -70,10 +79,13 @@ export default class Grid extends React.Component {
     for (let i = 0; i < gridRows; i++) {
       grid.push([]);
       for (let j = 0; j < gridCols; j++) {
+        let isStart, isEnd;
         let className;
         if (i === weightedStartNodeY && j === weightedStartNodeX) {
+          isStart = true;
           className = "grid-square start";
         } else if (i === weightedEndNodeY && j === weightedEndNodeX) {
+          isEnd = true;
           className = "grid-square end";
         } else {
           className = "grid-square unselected";
@@ -82,6 +94,8 @@ export default class Grid extends React.Component {
           y: i,
           x: j,
           id: i + "-" + j,
+          isStart: isStart,
+          isEnd: isEnd,
           className: className,
           weight: 0,
         });
@@ -91,6 +105,10 @@ export default class Grid extends React.Component {
   }
 
   handleClick(x, y) {
+    if ($("#" + y + "-" + x).has("img").length === 1) {
+      return;
+    }
+
     let newGrid = this.state.mainGrid.slice();
 
     if (this.state.currGrid === "unweighted") {
@@ -123,17 +141,19 @@ export default class Grid extends React.Component {
       unweightedEndNodeY
     );
     let speed = this.state.speed;
+    let stateGrid = this.state.mainGrid;
 
     for (let i = 1; i < path.length - 1; i++) {
       setTimeout(() => {
-        // visited[i][0] = x coorinate, visited[i][1] = y coordiante
         let id = path[i][1] + "-" + path[i][0];
         $("#" + id).addClass("visited");
+        stateGrid[path[i][1]][path[i][0]].className = "grid-square visited";
       }, speed * i);
     }
+
     setTimeout(() => {
       $(".grid").css("pointer-events", "auto");
-      drawUnweightedShortestPath(
+      this.drawUnweightedShortestPath(
         unweightedStartNodeX,
         unweightedStartNodeY,
         unweightedEndNodeX,
@@ -141,6 +161,7 @@ export default class Grid extends React.Component {
         speed,
         path
       );
+      this.setState({ mainGrid: stateGrid });
     }, path.length * speed);
   }
 
@@ -154,17 +175,18 @@ export default class Grid extends React.Component {
       unweightedEndNodeY
     );
     let speed = this.state.speed;
+    let stateGrid = this.state.mainGrid;
 
     for (let i = 1; i < path.length - 1; i++) {
       setTimeout(() => {
-        // visited[i][0] = x coorinate, visited[i][1] = y coordiante
         let id = path[i][1] + "-" + path[i][0];
         $("#" + id).addClass("visited");
+        stateGrid[path[i][1]][path[i][0]].className = "grid-square visited";
       }, speed * i);
     }
     setTimeout(() => {
       $(".grid").css("pointer-events", "auto");
-      drawUnweightedShortestPath(
+      this.drawUnweightedShortestPath(
         unweightedStartNodeX,
         unweightedStartNodeY,
         unweightedEndNodeX,
@@ -172,10 +194,12 @@ export default class Grid extends React.Component {
         speed,
         path
       );
+      this.setState({ mainGrid: stateGrid });
     }, path.length * speed);
   }
 
   /********************* Weighted algorithms *********************/
+
   animateDijkstra(grid) {
     $(".grid").css("pointer-events", "none");
     const path = dijkstra(
@@ -186,18 +210,25 @@ export default class Grid extends React.Component {
       weightedEndNodeY
     );
     let speed = this.state.speed;
+    let stateGrid = this.state.mainGrid;
 
     for (let i = 1; i < path.length - 1; i++) {
       setTimeout(() => {
-        // visited[i][0] = x coorinate, visited[i][1] = y coordiante
         let id = path[i][1] + "-" + path[i][0];
         $("#" + id).addClass("visited");
+        stateGrid[path[i][1]][path[i][0]].className = "grid-square visited";
       }, speed * i);
     }
 
     setTimeout(() => {
       $(".grid").css("pointer-events", "auto");
-      drawWeightedShortestPath(weightedEndNodeX, weightedEndNodeY, speed, path);
+      this.drawWeightedShortestPath(
+        weightedEndNodeX,
+        weightedEndNodeY,
+        speed,
+        path
+      );
+      this.setState({ mainGrid: stateGrid });
     }, path.length * speed);
   }
 
@@ -212,23 +243,91 @@ export default class Grid extends React.Component {
     );
 
     let speed = this.state.speed;
+    let stateGrid = this.state.mainGrid;
 
     for (let i = 1; i < path.length - 1; i++) {
       setTimeout(() => {
         let id = path[i][1] + "-" + path[i][0];
         $("#" + id).addClass("visited");
+        stateGrid[path[i][1]][path[i][0]].className = "grid-square visited";
       }, speed * i);
     }
 
     setTimeout(() => {
       $(".grid").css("pointer-events", "auto");
-      drawWeightedShortestPath(weightedEndNodeX, weightedEndNodeY, speed, path);
+      this.drawWeightedShortestPath(
+        weightedEndNodeX,
+        weightedEndNodeY,
+        speed,
+        path
+      );
+      this.setState({ mainGrid: stateGrid });
     }, speed * path.length);
+  }
+
+  /////////////////// draw paths //////////////////////////
+
+  drawUnweightedShortestPath(
+    unweightedStartNodeX,
+    unweightedStartNodeY,
+    unweightedEndNodeX,
+    unweightedEndNodeY,
+    speed,
+    path
+  ) {
+    let grid = this.state.mainGrid;
+    const shortestPath = unweightedShortestPath(
+      unweightedStartNodeX,
+      unweightedStartNodeY,
+      unweightedEndNodeX,
+      unweightedEndNodeY,
+      path
+    );
+    for (let i = 0; i < shortestPath.length; i++) {
+      setTimeout(() => {
+        let id = shortestPath[i][1] + "-" + shortestPath[i][0];
+        $("#" + id).attr("class", "grid-square shortestpath")
+        grid[shortestPath[i][1]][shortestPath[i][0]].className =
+          "grid-square shortestpath";
+      }, speed * i * 2);
+    }
+
+    setTimeout(() => {
+      document.getElementsByClassName("grid")[0].style.pointerEvents = "auto";
+      this.setState({ mainGrid: grid });
+    }, speed * shortestPath.length * 2);
+  }
+
+  drawWeightedShortestPath(
+    weightedStartNodeX,
+    weightedStartNodeY,
+    speed,
+    path
+  ) {
+    let grid = this.state.mainGrid;
+    const shortestPath = weightedShortestPath(
+      weightedStartNodeX,
+      weightedStartNodeY,
+      path
+    );
+    for (let i = 0; i < shortestPath.length; i++) {
+      setTimeout(() => {
+        let id = shortestPath[i][1] + "-" + shortestPath[i][0];
+        $("#" + id).attr("class", "grid-square shortestpath")
+        grid[shortestPath[i][1]][shortestPath[i][0]].className =
+          "grid-square shortestpath";
+      }, speed * i * 2);
+    }
+
+    setTimeout(() => {
+      document.getElementsByClassName("grid")[0].style.pointerEvents = "auto";
+      this.setState({ mainGrid: grid });
+    }, shortestPath.length * speed * 2);
   }
 
   /////////////////// visualize button function //////////////////////////
   visualizeAlgorithm() {
-    resetGrid();
+    this.resetGrid();
     const { algorithm, mainGrid } = this.state;
     switch (algorithm) {
       case "BFS":
@@ -264,42 +363,18 @@ export default class Grid extends React.Component {
   }
 
   changeGrid(type) {
-    resetGrid();
+    this.resetGrid();
     if (type === "weighted" && this.state.currGrid === "unweighted") {
-      document
-        .getElementById(unweightedStartNodeY + "-" + unweightedStartNodeX)
-        .classList.replace("start", "unselected");
-      document
-        .getElementById(unweightedEndNodeY + "-" + unweightedEndNodeX)
-        .classList.replace("end", "unselected");
-
-      $("#" + weightedStartNodeY + "-" + weightedStartNodeX).append(
-        $("#start")
-      );
-      $("#" + weightedEndNodeY + "-" + weightedEndNodeX).append($("#end"));
-
       this.setState({
+        currGrid: "weighted",
         unweightedGrid: this.state.mainGrid,
         mainGrid: this.state.weightedGrid,
-        currGrid: "weighted",
       });
     } else if (type === "unweighted" && this.state.currGrid === "weighted") {
-      document
-        .getElementById(weightedStartNodeY + "-" + weightedStartNodeX)
-        .classList.replace("start", "unselected");
-      document
-        .getElementById(weightedEndNodeY + "-" + weightedEndNodeX)
-        .classList.replace("end", "unselected");
-
-      $("#" + unweightedStartNodeY + "-" + unweightedStartNodeX).append(
-        $("#start")
-      );
-      $("#" + unweightedEndNodeY + "-" + unweightedEndNodeX).append($("#end"));
-
       this.setState({
+        currGrid: "unweighted",
         weightedGrid: this.state.mainGrid,
         mainGrid: this.state.unweightedGrid,
-        currGrid: "unweighted",
       });
     }
   }
@@ -345,10 +420,13 @@ export default class Grid extends React.Component {
       for (let i = 0; i < gridRows; i++) {
         grid.push([]);
         for (let j = 0; j < gridCols; j++) {
+          let isStart, isEnd;
           let className;
           if (i === unweightedStartNodeY && j === unweightedStartNodeX) {
+            isStart = true;
             className = "grid-square start";
           } else if (i === unweightedEndNodeY && j === unweightedEndNodeX) {
+            isEnd = true;
             className = "grid-square end";
           } else {
             className = "grid-square unselected";
@@ -358,6 +436,8 @@ export default class Grid extends React.Component {
             x: j,
             id: i + "-" + j,
             isWall: false,
+            isStart: isStart,
+            isEnd: isEnd,
             weight: null,
             className: className,
           });
@@ -367,10 +447,13 @@ export default class Grid extends React.Component {
       for (let i = 0; i < gridRows; i++) {
         grid.push([]);
         for (let j = 0; j < gridCols; j++) {
+          let isStart, isEnd;
           let className;
-          if (i === unweightedStartNodeY && j === unweightedStartNodeX) {
+          if (i === weightedStartNodeY && j === weightedStartNodeX) {
+            isStart = true;
             className = "grid-square start";
-          } else if (i === unweightedEndNodeY && j === unweightedEndNodeX) {
+          } else if (i === weightedEndNodeY && j === weightedEndNodeX) {
+            isEnd = true;
             className = "grid-square end";
           } else {
             className = "grid-square unselected";
@@ -379,9 +462,10 @@ export default class Grid extends React.Component {
             y: i,
             x: j,
             id: i + "-" + j,
-            isWall: false,
-            weight: 0,
+            isStart: isStart,
+            isEnd: isEnd,
             className: className,
+            weight: 0,
           });
         }
       }
@@ -389,23 +473,57 @@ export default class Grid extends React.Component {
     this.setState({ mainGrid: grid });
   }
 
-  dragAndDropUpdate(e, id) {
+  dragAndDropUpdate(id, e) {
     let newGrid = this.state.mainGrid.slice();
+    let data = JSON.parse(e.dataTransfer.getData("data"));
 
     // eX = endX, eY = endY
 
+    let sY = data[1].substring(0, data[1].indexOf("-"));
+    let sX = data[1].substring(data[1].indexOf("-") + 1, data[1].length);
     let eY = id.substring(0, id.indexOf("-"));
     let eX = id.substring(id.indexOf("-") + 1, id.length);
 
-    if (newGrid[eY][eX].isWall) {
-      newGrid[eY][eX] = { ...newGrid[eY][eX], isWall: false };
+    if (data[0] === "start") {
+      newGrid[sY][sX].isStart = false;
+      newGrid[eY][eX].isStart = true;
+
+      newGrid[sY][sX].className = "grid-square unselected";
+      newGrid[eY][eX].className = "grid-square start";
+    } else {
+      newGrid[sY][sX].isEnd = false;
+      newGrid[eY][eX].isEnd = true;
+
+      newGrid[sY][sX].className = "grid-square unselected";
+      newGrid[eY][eX].className = "grid-square end";
     }
 
-    if (newGrid[eY][eX].weight !== null && newGrid[eY][eX].weight !== 0) {
+    if (newGrid[eY][eX].isWall) {
+      newGrid[eY][eX].isWall = false;
+    }
+
+    if (this.state.currGrid === "weighted") {
       newGrid[eY][eX].weight = 0;
     }
 
     this.setState({ mainGrid: newGrid });
+  }
+
+  resetGrid() {
+    let grid = this.state.mainGrid;
+    for (let i = 0; i < gridRows; i++) {
+      for (let j = 0; j < gridCols; j++) {
+        // set visited nodes to blank nodes
+        let nodeClass = String(grid[i][j].className);
+        if (
+          nodeClass.includes("visited") ||
+          nodeClass.includes("shortestpath")
+        ) {
+          grid[i][j].className = "grid-square unselected";
+        }
+      }
+    }
+    this.setState({ mainGrid: grid });
   }
 
   /////////////////// Render ///////////////////
@@ -447,21 +565,6 @@ export default class Grid extends React.Component {
 
 // JavaScript functions
 
-const resetGrid = () => {
-  for (let i = 0; i < gridRows; i++) {
-    for (let j = 0; j < gridCols; j++) {
-      // set visited nodes to blank nodes
-      let node = document.getElementById(i + "-" + j);
-      if (
-        node.classList.contains("visited") ||
-        node.classList.contains("shortestpath")
-      ) {
-        node.className = "grid-square unselected";
-      }
-    }
-  }
-};
-
 // drag and drop functions
 const drag = () => (e) => {
   let data = [e.target.id, e.target.parentNode.id];
@@ -472,50 +575,30 @@ const drop = (id, grid) => (e) => {
   e.preventDefault();
   let data = JSON.parse(e.dataTransfer.getData("data"));
 
-  // stringStartId represents the id of the node that the item was initially dragged from
   // stringEndId represents the node where data is being dropped
 
-  let stringStartId = String(data[1]),
-    stringEndId = String(id);
-  $("#" + stringEndId).empty();
-  let y = parseInt(stringEndId.substring(0, stringEndId.indexOf("-"))),
-    x = parseInt(
-      stringEndId.substring(stringEndId.indexOf("-") + 1, stringEndId.length)
-    );
+  let stringEndId = String(id);
+  let y = parseInt(stringEndId.substring(0, stringEndId.indexOf("-")));
+  let x = parseInt(
+    stringEndId.substring(stringEndId.indexOf("-") + 1, stringEndId.length)
+  );
   e.target.appendChild(document.getElementById(data[0]));
 
   if (grid === "unweighted") {
     if (data[0] === "start") {
       unweightedStartNodeX = x;
       unweightedStartNodeY = y;
-      $("#" + stringEndId).attr({ class: "grid-square start" });
-      document
-        .getElementById(stringStartId)
-        .classList.replace("start", "unselected");
     } else {
       unweightedEndNodeX = x;
       unweightedEndNodeY = y;
-      $("#" + stringEndId).attr({ class: "grid-square end" });
-      document
-        .getElementById(stringStartId)
-        .classList.replace("end", "unselected");
     }
   } else {
     if (data[0] === "start") {
       weightedStartNodeX = x;
       weightedStartNodeY = y;
-      $("#" + stringEndId).attr({ class: "grid-square start" });
-
-      document
-        .getElementById(stringStartId)
-        .classList.replace("start", "unselected");
     } else {
       weightedEndNodeX = x;
       weightedEndNodeY = y;
-      $("#" + stringEndId).attr({ class: "grid-square end" });
-      document
-        .getElementById(stringStartId)
-        .classList.replace("end", "unselected");
     }
   }
 };

@@ -15,7 +15,6 @@ export default class Settings extends React.Component {
       [active].classList.replace("active", "inactive");
 
     this.props.changeSpeed(speed);
-    console.log(speed + " " + button);
 
     // swap the active button
     let temp = active;
