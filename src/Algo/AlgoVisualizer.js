@@ -1,4 +1,4 @@
-import './App.css';
+import './AlgoVisualizer.css';
 
 import Grid from './Components/Grid';
 import Popup from "./Components/PopupWarning";
