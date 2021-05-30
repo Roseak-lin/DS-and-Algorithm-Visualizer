@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import reportWebVitals from './reportWebVitals';
-import { BrowserRouter as Router, Route, Switch, BrowserRouter } from 'react-router-dom';
+import { HashRouter as Router, Route, Switch, BrowserRouter } from 'react-router-dom';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import MainPage from './MainPage/HomeScreen';
