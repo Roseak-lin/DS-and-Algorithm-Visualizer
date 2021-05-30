@@ -1,8 +1,5 @@
-import './AlgoVisualizer.css';
-
 import Grid from './Components/Grid';
 import Popup from "./Components/PopupWarning";
-
 
 function App() {
   return (

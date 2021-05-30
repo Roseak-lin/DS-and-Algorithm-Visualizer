@@ -2,6 +2,8 @@ import React from "react";
 import right_arrow from "../Images/arrow_right.jpg";
 import circle from "../Images/circle.png";
 
+import algo from "../AlgoVisualizer.module.css";
+
 export default class Square extends React.Component {
   render() {
     const {
@@ -32,7 +34,7 @@ export default class Square extends React.Component {
             onDragStart={(event) => {
               drag(event);
             }}
-            id="start"
+            id={algo.start}
             alt="start"
             title="Start"
           />
@@ -52,7 +54,7 @@ export default class Square extends React.Component {
             onDragStart={(event) => {
               drag(event);
             }}
-            id="end"
+            id={algo.end}
             alt="end"
             title="End"
           />

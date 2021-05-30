@@ -5,7 +5,15 @@ import Nav from "react-bootstrap/Nav";
 import NavDropdown from "react-bootstrap/NavDropdown";
 import gear from "../Images/gear.png";
 
+import algo from "../AlgoVisualizer.module.css";
+
 export default class NavigationBar extends React.Component {
+  componentDidMount() {
+    document
+      .querySelector(".nav-link")
+      .addEventListener("hover", () => console.log("h"));
+  }
+
   render() {
     const {
       changeAlgorithm,
@@ -14,11 +22,11 @@ export default class NavigationBar extends React.Component {
       generateNewGrid,
       clearWeightsAndWalls,
     } = this.props;
+
     return (
       <Nav
         justify
         id="nav"
-        style={{ width: 100 + "%" }}
         fill="true"
         variant="pills"
         onSelect={(eventKey) => {
@@ -26,7 +34,7 @@ export default class NavigationBar extends React.Component {
         }}
       >
         <Nav.Item>
-          <Nav.Link className="nav-title">Algorithm Visualizer</Nav.Link>
+          <Nav.Link className={algo.nav_title}>Algorithm Visualizer</Nav.Link>
         </Nav.Item>
 
         <NavDropdown title="Unweighted algorithms">
@@ -48,7 +56,7 @@ export default class NavigationBar extends React.Component {
           </NavDropdown.Item>
         </NavDropdown>
 
-        <button className="navbar-btn" onClick={onClick}>
+        <button className={algo.navbar_btn} onClick={onClick}>
           Visualize
           {this.props.algorithm == null ? "" : " " + this.props.algorithm}!
         </button>
@@ -93,12 +101,12 @@ export default class NavigationBar extends React.Component {
         </Nav.Item>
 
         <button
-          id="settings-btn"
+          id={algo.settings_btn}
           onClick={() => {
-            $("#settings-bg").fadeIn(150);
+            $(`#${algo.settings_bg}`).fadeIn(150);
           }}
         >
-          <img src={gear} alt="settings" id="gear" />
+          <img src={gear} alt="settings" id={algo.gear} />
         </button>
       </Nav>
     );

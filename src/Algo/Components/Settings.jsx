@@ -3,16 +3,21 @@ import $ from "jquery";
 
 import Table from "react-bootstrap/Table";
 
+import algo from "../AlgoVisualizer.module.css";
+
 var active = 1;
 
 export default class Settings extends React.Component {
   changeSpeed(speed, button) {
+    if (button === active) {
+      return;
+    }
     document
-      .getElementsByClassName("speed-btn")
-      [button].classList.replace("inactive", "active");
+      .getElementsByClassName(`${algo.settings_btn}`)
+      [button].classList.replace(`${algo.inactive}`, `${algo.active}`);
     document
-      .getElementsByClassName("speed-btn")
-      [active].classList.replace("active", "inactive");
+      .getElementsByClassName(`${algo.settings_btn}`)
+      [active].classList.replace(`${algo.active}`, `${algo.inactive}`);
 
     this.props.changeSpeed(speed);
 
@@ -24,12 +29,19 @@ export default class Settings extends React.Component {
 
   render() {
     return (
-      <div id="settings-bg">
-        <div id="settings">
+      <div
+        id={algo.settings_bg}
+        onClick={(event) => {
+          if (event.target.id === `${algo.settings_bg}`) {
+            $(`#${algo.settings_bg}`).fadeOut(150);
+          }
+        }}
+      >
+        <div id={algo.settings}>
           <span
-            id="settings-close"
+            id={algo.settings_close}
             onClick={() => {
-              $("#settings-bg").fadeOut(150);
+              $(`#${algo.settings_bg}`).fadeOut(150);
             }}
           >
             &times;
@@ -40,7 +52,7 @@ export default class Settings extends React.Component {
                 <th>Speed</th>
                 <td>
                   <button
-                    className="speed-btn inactive"
+                    className={`${algo.settings_btn} ${algo.inactive}`}
                     onClick={() => this.changeSpeed("slow", 0)}
                   >
                     Slow
@@ -48,7 +60,7 @@ export default class Settings extends React.Component {
                 </td>
                 <td>
                   <button
-                    className="speed-btn active"
+                    className={`${algo.settings_btn} ${algo.active}`}
                     onClick={() => this.changeSpeed("med", 1)}
                   >
                     Medium
@@ -56,7 +68,7 @@ export default class Settings extends React.Component {
                 </td>
                 <td>
                   <button
-                    className="speed-btn inactive"
+                    className={`${algo.settings_btn} ${algo.inactive}`}
                     onClick={() => this.changeSpeed("fast", 2)}
                   >
                     Fast

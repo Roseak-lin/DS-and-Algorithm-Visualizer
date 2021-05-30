@@ -15,6 +15,8 @@ import {
 } from "../Algorithms/WeightedSearchAlgorithms";
 import Settings from "./Settings";
 
+import algo from "../AlgoVisualizer.module.css";
+
 const gridRows = 25;
 const gridCols = 72;
 
@@ -47,27 +49,37 @@ export default class Grid extends React.Component {
     for (let i = 0; i < gridRows; i++) {
       grid.push([]);
       for (let j = 0; j < gridCols; j++) {
-        let isStart, isEnd;
-        let className;
-        if (i === unweightedStartNodeY && j === unweightedStartNodeX) {
-          isStart = true;
-          className = "grid-square start";
-        } else if (i === unweightedEndNodeY && j === unweightedEndNodeX) {
-          isEnd = true;
-          className = "grid-square end";
+        if (i === weightedStartNodeY && j === weightedStartNodeX) {
+          grid[i].push({
+            y: i,
+            x: j,
+            id: i + "-" + j,
+            isStart: true,
+            isEnd: false,
+            className: `${algo.grid_square} ${algo.start}`,
+            weight: 0,
+          });
+        } else if (i === weightedEndNodeY && j === weightedEndNodeX) {
+          grid[i].push({
+            y: i,
+            x: j,
+            id: i + "-" + j,
+            isStart: false,
+            isEnd: true,
+            className: `${algo.grid_square} ${algo.end}`,
+            weight: 0,
+          });
         } else {
-          className = "grid-square unselected";
+          grid[i].push({
+            y: i,
+            x: j,
+            id: i + "-" + j,
+            isStart: false,
+            isEnd: false,
+            className: `${algo.grid_square} ${algo.unselected}`,
+            weight: 0,
+          });
         }
-        grid[i].push({
-          y: i,
-          x: j,
-          id: i + "-" + j,
-          isWall: false,
-          isStart: isStart,
-          isEnd: isEnd,
-          weight: null,
-          className: className,
-        });
       }
     }
     this.setState({ unweightedGrid: grid });
@@ -79,32 +91,44 @@ export default class Grid extends React.Component {
     for (let i = 0; i < gridRows; i++) {
       grid.push([]);
       for (let j = 0; j < gridCols; j++) {
-        let isStart, isEnd;
-        let className;
         if (i === weightedStartNodeY && j === weightedStartNodeX) {
-          isStart = true;
-          className = "grid-square start";
+          grid[i].push({
+            y: i,
+            x: j,
+            id: i + "-" + j,
+            isStart: true,
+            isEnd: false,
+            className: `${algo.grid_square} ${algo.start}`,
+            weight: 0,
+          });
         } else if (i === weightedEndNodeY && j === weightedEndNodeX) {
-          isEnd = true;
-          className = "grid-square end";
+          grid[i].push({
+            y: i,
+            x: j,
+            id: i + "-" + j,
+            isStart: false,
+            isEnd: true,
+            className: `${algo.grid_square} ${algo.end}`,
+            weight: 0,
+          });
         } else {
-          className = "grid-square unselected";
+          grid[i].push({
+            y: i,
+            x: j,
+            id: i + "-" + j,
+            isStart: false,
+            isEnd: false,
+            className: `${algo.grid_square} ${algo.unselected}`,
+            weight: 0,
+          });
         }
-        grid[i].push({
-          y: i,
-          x: j,
-          id: i + "-" + j,
-          isStart: isStart,
-          isEnd: isEnd,
-          className: className,
-          weight: 0,
-        });
       }
     }
     this.setState({ weightedGrid: grid });
   }
 
   handleClick(x, y) {
+    console.log(this.state.mainGrid[y][x].isEnd)
     if ($("#" + y + "-" + x).has("img").length === 1) {
       return;
     }
@@ -116,8 +140,8 @@ export default class Grid extends React.Component {
         ...newGrid[y][x],
         isWall: !newGrid[y][x].isWall,
         className: newGrid[y][x].isWall
-          ? "grid-square unselected"
-          : "grid-square selected",
+          ? `${algo.grid_square} ${algo.unselected}`
+          : `${algo.grid_square} ${algo.selected}`,
       };
     } else {
       newGrid[y][x] = {
@@ -132,7 +156,7 @@ export default class Grid extends React.Component {
 
   /********************* Unweighted algorithms *********************/
   animateBFS(grid) {
-    $(".grid").css("pointer-events", "none");
+    $(`.${algo.grid}`).css("pointer-events", "none");
     const path = bfs(
       grid,
       unweightedStartNodeX,
@@ -146,13 +170,15 @@ export default class Grid extends React.Component {
     for (let i = 1; i < path.length - 1; i++) {
       setTimeout(() => {
         let id = path[i][1] + "-" + path[i][0];
-        $("#" + id).addClass("visited");
-        stateGrid[path[i][1]][path[i][0]].className = "grid-square visited";
+        $("#" + id).addClass(`${algo.visited}`);
+        stateGrid[path[i][1]][path[i][0]].className = `${algo.grid_square} ${
+          algo.visited
+        }`;
       }, speed * i);
     }
 
     setTimeout(() => {
-      $(".grid").css("pointer-events", "auto");
+      $(`.${algo.grid}`).css("pointer-events", "auto");
       this.drawUnweightedShortestPath(
         unweightedStartNodeX,
         unweightedStartNodeY,
@@ -166,7 +192,7 @@ export default class Grid extends React.Component {
   }
 
   animateDFS(grid) {
-    $(".grid").css("pointer-events", "none");
+    $(`.${algo.grid}`).css("pointer-events", "none");
     const path = dfs(
       grid,
       unweightedStartNodeX,
@@ -180,12 +206,14 @@ export default class Grid extends React.Component {
     for (let i = 1; i < path.length - 1; i++) {
       setTimeout(() => {
         let id = path[i][1] + "-" + path[i][0];
-        $("#" + id).addClass("visited");
-        stateGrid[path[i][1]][path[i][0]].className = "grid-square visited";
+        $("#" + id).addClass(`${algo.visited}`);
+        stateGrid[path[i][1]][path[i][0]].className = `${algo.grid_square} ${
+          algo.visited
+        }`;
       }, speed * i);
     }
     setTimeout(() => {
-      $(".grid").css("pointer-events", "auto");
+      $(`.${algo.grid}`).css("pointer-events", "auto");
       this.drawUnweightedShortestPath(
         unweightedStartNodeX,
         unweightedStartNodeY,
@@ -201,7 +229,7 @@ export default class Grid extends React.Component {
   /********************* Weighted algorithms *********************/
 
   animateDijkstra(grid) {
-    $(".grid").css("pointer-events", "none");
+    $(`.${algo.grid}`).css("pointer-events", "none");
     const path = dijkstra(
       grid,
       weightedStartNodeX,
@@ -215,13 +243,15 @@ export default class Grid extends React.Component {
     for (let i = 1; i < path.length - 1; i++) {
       setTimeout(() => {
         let id = path[i][1] + "-" + path[i][0];
-        $("#" + id).addClass("visited");
-        stateGrid[path[i][1]][path[i][0]].className = "grid-square visited";
+        $("#" + id).addClass(`${algo.visited}`);
+        stateGrid[path[i][1]][path[i][0]].className = `${algo.grid_square} ${
+          algo.visited
+        }`;
       }, speed * i);
     }
 
     setTimeout(() => {
-      $(".grid").css("pointer-events", "auto");
+      $(`.${algo.grid}`).css("pointer-events", "auto");
       this.drawWeightedShortestPath(
         weightedEndNodeX,
         weightedEndNodeY,
@@ -233,7 +263,7 @@ export default class Grid extends React.Component {
   }
 
   animateAstar(grid) {
-    $(".grid").css("pointer-events", "none");
+    $(`.${algo.grid}`).css("pointer-events", "none");
     const path = astar(
       grid,
       weightedStartNodeX,
@@ -248,13 +278,15 @@ export default class Grid extends React.Component {
     for (let i = 1; i < path.length - 1; i++) {
       setTimeout(() => {
         let id = path[i][1] + "-" + path[i][0];
-        $("#" + id).addClass("visited");
-        stateGrid[path[i][1]][path[i][0]].className = "grid-square visited";
+        $("#" + id).addClass(`${algo.visited}`);
+        stateGrid[path[i][1]][path[i][0]].className = `${algo.grid_square} ${
+          algo.visited
+        }`;
       }, speed * i);
     }
 
     setTimeout(() => {
-      $(".grid").css("pointer-events", "auto");
+      $(`${algo.grid}`).css("pointer-events", "auto");
       this.drawWeightedShortestPath(
         weightedEndNodeX,
         weightedEndNodeY,
@@ -286,14 +318,15 @@ export default class Grid extends React.Component {
     for (let i = 0; i < shortestPath.length; i++) {
       setTimeout(() => {
         let id = shortestPath[i][1] + "-" + shortestPath[i][0];
-        $("#" + id).attr("class", "grid-square shortestpath")
-        grid[shortestPath[i][1]][shortestPath[i][0]].className =
-          "grid-square shortestpath";
+        $("#" + id).attr("class", `${algo.grid_square} ${algo.shortestpath}`);
+        grid[shortestPath[i][1]][shortestPath[i][0]].className = `${
+          algo.grid_square
+        } ${algo.shortestpath}`;
       }, speed * i * 2);
     }
 
     setTimeout(() => {
-      document.getElementsByClassName("grid")[0].style.pointerEvents = "auto";
+      $(`.${algo.grid}`).css("pointer-events", "auto");
       this.setState({ mainGrid: grid });
     }, speed * shortestPath.length * 2);
   }
@@ -313,14 +346,15 @@ export default class Grid extends React.Component {
     for (let i = 0; i < shortestPath.length; i++) {
       setTimeout(() => {
         let id = shortestPath[i][1] + "-" + shortestPath[i][0];
-        $("#" + id).attr("class", "grid-square shortestpath")
-        grid[shortestPath[i][1]][shortestPath[i][0]].className =
-          "grid-square shortestpath";
+        $("#" + id).attr("class", `${algo.grid_square} ${algo.shortestpath}`);
+        grid[shortestPath[i][1]][shortestPath[i][0]].className = `${
+          algo.grid_square
+        } ${algo.shortestpath}`;
       }, speed * i * 2);
     }
 
     setTimeout(() => {
-      document.getElementsByClassName("grid")[0].style.pointerEvents = "auto";
+      $(`.${algo.grid}`).css("pointer-events", "auto");
       this.setState({ mainGrid: grid });
     }, shortestPath.length * speed * 2);
   }
@@ -392,8 +426,8 @@ export default class Grid extends React.Component {
           }
           grid[i][j].isWall = Math.random() * 5 > 4;
           grid[i][j].className = grid[i][j].isWall
-            ? "grid-square selected"
-            : "grid-square unselected";
+            ? `${algo.grid_square} ${algo.selected}`
+            : `${algo.grid_square} ${algo.unselected}`;
         }
       }
       this.setState({ mainGrid: grid });
@@ -420,53 +454,74 @@ export default class Grid extends React.Component {
       for (let i = 0; i < gridRows; i++) {
         grid.push([]);
         for (let j = 0; j < gridCols; j++) {
-          let isStart, isEnd;
-          let className;
           if (i === unweightedStartNodeY && j === unweightedStartNodeX) {
-            isStart = true;
-            className = "grid-square start";
+            grid[i].push({
+              y: i,
+              x: j,
+              id: i + "-" + j,
+              isStart: true,
+              isEnd: false,
+              className: `${algo.grid_square} ${algo.start}`,
+              weight: 0,
+            });
           } else if (i === unweightedEndNodeY && j === unweightedEndNodeX) {
-            isEnd = true;
-            className = "grid-square end";
+            grid[i].push({
+              y: i,
+              x: j,
+              id: i + "-" + j,
+              isStart: false,
+              isEnd: true,
+              className: `${algo.grid_square} ${algo.end}`,
+              weight: 0,
+            });
           } else {
-            className = "grid-square unselected";
+            grid[i].push({
+              y: i,
+              x: j,
+              id: i + "-" + j,
+              isStart: false,
+              isEnd: false,
+              className: `${algo.grid_square} ${algo.unselected}`,
+              weight: 0,
+            });
           }
-          grid[i].push({
-            y: i,
-            x: j,
-            id: i + "-" + j,
-            isWall: false,
-            isStart: isStart,
-            isEnd: isEnd,
-            weight: null,
-            className: className,
-          });
         }
       }
     } else {
       for (let i = 0; i < gridRows; i++) {
         grid.push([]);
         for (let j = 0; j < gridCols; j++) {
-          let isStart, isEnd;
-          let className;
           if (i === weightedStartNodeY && j === weightedStartNodeX) {
-            isStart = true;
-            className = "grid-square start";
+            grid[i].push({
+              y: i,
+              x: j,
+              id: i + "-" + j,
+              isStart: true,
+              isEnd: false,
+              className: `${algo.grid_square} ${algo.start}`,
+              weight: 0,
+            });
           } else if (i === weightedEndNodeY && j === weightedEndNodeX) {
-            isEnd = true;
-            className = "grid-square end";
+            grid[i].push({
+              y: i,
+              x: j,
+              id: i + "-" + j,
+              isStart: false,
+              isEnd: true,
+              className: `${algo.grid_square} ${algo.end}`,
+              weight: 0,
+            });
           } else {
-            className = "grid-square unselected";
+            grid[i].push({
+              y: i,
+              x: j,
+              id: i + "-" + j,
+              isStart: false,
+              isEnd: false,
+              className: `${algo.grid_square} ${algo.unselected}`,
+              weight: 0,
+            });
           }
-          grid[i].push({
-            y: i,
-            x: j,
-            id: i + "-" + j,
-            isStart: isStart,
-            isEnd: isEnd,
-            className: className,
-            weight: 0,
-          });
         }
       }
     }
@@ -476,7 +531,8 @@ export default class Grid extends React.Component {
   dragAndDropUpdate(id, e) {
     let newGrid = this.state.mainGrid.slice();
     let data = JSON.parse(e.dataTransfer.getData("data"));
-
+    
+    // sX = startX, sY = startY
     // eX = endX, eY = endY
 
     let sY = data[1].substring(0, data[1].indexOf("-"));
@@ -484,18 +540,18 @@ export default class Grid extends React.Component {
     let eY = id.substring(0, id.indexOf("-"));
     let eX = id.substring(id.indexOf("-") + 1, id.length);
 
-    if (data[0] === "start") {
+    if (data[0] === `${algo.start}`) {
       newGrid[sY][sX].isStart = false;
       newGrid[eY][eX].isStart = true;
 
-      newGrid[sY][sX].className = "grid-square unselected";
-      newGrid[eY][eX].className = "grid-square start";
+      newGrid[sY][sX].className = `${algo.grid_square} ${algo.unselected}`;
+      newGrid[eY][eX].className = `${algo.grid_square} ${algo.start}`;
     } else {
       newGrid[sY][sX].isEnd = false;
       newGrid[eY][eX].isEnd = true;
 
-      newGrid[sY][sX].className = "grid-square unselected";
-      newGrid[eY][eX].className = "grid-square end";
+      newGrid[sY][sX].className = `${algo.grid_square} ${algo.unselected}`;
+      newGrid[eY][eX].className = `${algo.grid_square} ${algo.end}`
     }
 
     if (newGrid[eY][eX].isWall) {
@@ -519,7 +575,7 @@ export default class Grid extends React.Component {
           nodeClass.includes("visited") ||
           nodeClass.includes("shortestpath")
         ) {
-          grid[i][j].className = "grid-square unselected";
+          grid[i][j].className = `${algo.grid_square} ${algo.unselected}`;
         }
       }
     }
@@ -530,7 +586,7 @@ export default class Grid extends React.Component {
   render() {
     const { mainGrid } = this.state;
     return (
-      <div className="grid" align="center">
+      <div className={`${algo.grid}`} align="center">
         <Settings changeSpeed={(speed) => this.changeSpeed(speed)} />
         <NavigationBar
           onClick={() => this.visualizeAlgorithm()}
@@ -542,7 +598,7 @@ export default class Grid extends React.Component {
         />
         {mainGrid.map((row, key) => {
           return (
-            <div className="grid-row" key={key}>
+            <div className={`${algo.grid_row}`} key={key}>
               {row.map((node, key) => {
                 return (
                   <Square
@@ -583,9 +639,9 @@ const drop = (id, grid) => (e) => {
     stringEndId.substring(stringEndId.indexOf("-") + 1, stringEndId.length)
   );
   e.target.appendChild(document.getElementById(data[0]));
-
+  
   if (grid === "unweighted") {
-    if (data[0] === "start") {
+    if (data[0] === `${algo.start}`) {
       unweightedStartNodeX = x;
       unweightedStartNodeY = y;
     } else {
@@ -593,7 +649,7 @@ const drop = (id, grid) => (e) => {
       unweightedEndNodeY = y;
     }
   } else {
-    if (data[0] === "start") {
+    if (data[0] === `${algo.start}`) {
       weightedStartNodeX = x;
       weightedStartNodeY = y;
     } else {

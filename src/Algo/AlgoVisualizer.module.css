@@ -3,11 +3,11 @@
     align-items: center;
 }
 
-.grid-row {
+.grid_row {
     height: 1.25vw;
 }
 
-.grid-square {
+.grid_square {
     display: inline-block;
     background-color: transparent;
     border: 1px solid rgb(77, 77, 77, 0.5);
@@ -21,7 +21,7 @@
     user-select: none;
 }
 
-.grid-square:hover {
+.grid_square:hover {
     cursor: default;
 }
 
@@ -41,7 +41,7 @@
     opacity: 1;
 }
 
-#popup-text {
+#popup_text {
     position: absolute;
     width: 30vw;
     background-color: white;
@@ -68,32 +68,32 @@
 
 /* Grid Squares */
 
-.grid-square:focus {
+.grid_square:focus {
     outline: none;
 }
 
-.grid-square.selected {
+.grid_square.selected {
     background-color: #28b0ff;
     transition: 0.5s;
 }
 
-.grid-square.unselected {
+.grid_square.unselected {
     color: #000;
     background-color: transparent;
 }
 
-.grid-square.start, .grid-square.end {
+.grid_square.start, .grid_square.end {
     background-color: transparent;
 }
 
-.grid-square.visited {
-    animation: visit-square 0.3s;
+.grid_square.visited {
+    animation: visit_square 0.3s;
     color: #fff;
     background-color: #153e90;
     border: 1px solid rgb(255, 255, 255, 0.5);
 }
 
-@keyframes visit-square {
+@keyframes visit_square {
     from {
         background-color: #fffb00;
         border: 0.05vw solid rgb(77, 77, 77, 0.5);
@@ -104,7 +104,7 @@
     }
 }
 
-.grid-square.shortestpath {
+.grid_square.shortestpath {
     color: #000;
     background-color: #fffb00;
     border: 1px solid rgba(0, 0, 0, 0.5);
@@ -133,17 +133,11 @@
 
 /* Nav bar */
 
-#nav {
-    margin-top: 0.5em;
-    margin-bottom: 1em;
-    align-items: center;
+#nav > div {
+    color: #000;
 }
 
-.nav-title {
-    font-size: 1.5em;
-}
-
-.navbar-btn {
+.navbar_btn {
     margin: 0 0.25em 0 0.25em;
     border-radius: 0.5em;
     background-color: #39bffd;
@@ -152,23 +146,7 @@
     height: 2em;
 }
 
-.nav-link {
-    color: #000;
-}
-
-.nav-link:hover {
-    color: rgb(0, 0, 0, 0.7);
-}
-
-.nav-link.active {
-    background-color: #000;
-}
-
-.nav div {
-    width: 100%;
-}
-
-#settings-btn {
+#settings_btn {
     margin: 0 8px 0 0;
     border-radius: 0.25em;
     border: 1px solid #000;
@@ -181,7 +159,7 @@
     height: 1.5em;
 }
 
-#settings-btn:hover>#gear {
+#settings_btn:hover>#gear {
     animation: rotate-gear 0.3s;
 }
 
@@ -196,7 +174,7 @@
 
 /* Settings Menu */
 
-#settings-bg {
+#settings_bg {
     display: none;
     position: fixed;
     z-index: 1;
@@ -231,7 +209,7 @@
     padding: 2em;
 }
 
-#settings-close {
+#settings_close {
     position: absolute;
     color: rgb(88, 88, 88);
     font-size: 2em;
@@ -239,7 +217,7 @@
     right: 10px;
 }
 
-#settings-close:hover {
+#settings_close:hover {
     cursor: pointer;
 }
 

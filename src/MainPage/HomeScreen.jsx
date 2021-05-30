@@ -3,18 +3,18 @@ import home from "./HomeScreen.module.css";
 
 export default class HomeScreen extends React.Component {
   componentDidMount() {
-    let parent = document.getElementsByClassName(`${home.splitscreen}`)[0];
-    let leftPanel = parent.getElementsByClassName(`${home.left}`)[0],
+    let parent = document.querySelector(`.${home.splitscreen}`);
+    let leftPanel = parent.querySelector(`.${home.left}`),
       botPanel = parent
-        .getElementsByClassName(`${home.right}`)[0]
-        .getElementsByClassName(`${home.content}`)[0];
+        .querySelector(`.${home.right}`)
+        .querySelector(`.${home.content}`);
 
     leftPanel.addEventListener("mouseover", function () {
       leftPanel.style.width = `calc(50vw + 1000px + ${window.innerWidth * 0.05}px)`;
     });
 
     leftPanel.addEventListener("click", function () {
-      window.location.href = "/data-structure-visualizer";
+      window.location.href = "/DS-and-Algorithm-Visualizer/data-structure-visualizer";
     });
 
     botPanel.addEventListener("mouseover", function () {
@@ -22,7 +22,7 @@ export default class HomeScreen extends React.Component {
     });
 
     botPanel.addEventListener("click", function () {
-      window.location.href = "/algorithm-visualizer";
+      window.location.href = "/DS-and-Algorithm-Visualizer/algorithm-visualizer";
     });
   }
 
