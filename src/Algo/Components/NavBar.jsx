@@ -33,8 +33,8 @@ export default class NavigationBar extends React.Component {
           changeAlgorithm(eventKey);
         }}
       >
-        <Nav.Item>
-          <Nav.Link className={algo.nav_title}>Algorithm Visualizer</Nav.Link>
+        <Nav.Item className="nav_title">
+          <Nav.Link>Algorithm Visualizer</Nav.Link>
         </Nav.Item>
 
         <NavDropdown title="Unweighted algorithms">

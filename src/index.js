@@ -13,9 +13,9 @@ ReactDOM.render(
   <BrowserRouter>
     <Router>
       <Switch>
-        <Route exact path="/DS-and-Algorithm-Visualizer" component={MainPage} />
-        <Route exact path="/DS-and-Algorithm-Visualizer/algorithm-visualizer" component={AlgoVisualizer} />
-        <Route exact path="/DS-and-Algorithm-Visualizer/data-structure-visualizer" component={DataStructures} />
+        <Route exact path="/" component={MainPage} />
+        <Route exact path="/algorithm-visualizer" component={AlgoVisualizer} />
+        <Route exact path="/data-structure-visualizer" component={DataStructures} />
       </Switch>
     </Router>
   </BrowserRouter>,

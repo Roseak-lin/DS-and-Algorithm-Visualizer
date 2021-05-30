@@ -14,7 +14,7 @@ export default class HomeScreen extends React.Component {
     });
 
     leftPanel.addEventListener("click", function () {
-      window.location.href = "/DS-and-Algorithm-Visualizer/data-structure-visualizer";
+      window.location.href = "/DS-and-Algorithm-Visualizer/#/data-structure-visualizer";
     });
 
     botPanel.addEventListener("mouseover", function () {
@@ -22,7 +22,7 @@ export default class HomeScreen extends React.Component {
     });
 
     botPanel.addEventListener("click", function () {
-      window.location.href = "/DS-and-Algorithm-Visualizer/algorithm-visualizer";
+      window.location.href = "/DS-and-Algorithm-Visualizer/#/algorithm-visualizer";
     });
   }
 
