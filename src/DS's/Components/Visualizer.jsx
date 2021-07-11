@@ -6,6 +6,7 @@ import Alert from "./Alert";
 
 import ds from "../DataStructures.module.css";
 import $ from "jquery";
+import anime from "animejs";
 
 export default class DSVisualizer extends React.Component {
   constructor(props) {
@@ -40,7 +41,9 @@ export default class DSVisualizer extends React.Component {
         this.setState({ functions: ["enqueue", "dequeue"] });
         break;
       case "deque":
-        this.setState({ functions: ["enqueueF", "dequeueF", "enqueueB", "dequeueB"] });
+        this.setState({
+          functions: ["enqueueF", "dequeueF", "enqueueB", "dequeueB"],
+        });
         break;
       case "stack":
         this.setState({ functions: ["push", "pop"] });
@@ -68,76 +71,143 @@ export default class DSVisualizer extends React.Component {
 
     let struct = this.state.structure.slice();
     if (index === "") {
-      struct.push(value);
+      this.addAnim(struct.length - 1, value);
     } else if (parseInt(index) > struct.length) {
+      $("#alert_text").text(`Cannot add at index ${index}`);
+      $(`.${ds.alertBG}`).fadeIn();
       return;
     } else {
-      struct.splice(index, 0, value);
+      this.addAnim(index, value);
+      return;
     }
-    this.setState({ structure: struct });
   }
 
   remove(index) {
     let struct = this.state.structure.slice();
-
-    if (struct.length === 0) {  
-      $("#alert_text").text(`The ${this.state.behavior} is empty! There's nothing to remove!`);
+    if (struct.length === 0) {
+      $("#alert_text").text(
+        `The ${this.state.behavior} is empty! There's nothing to remove!`
+      );
       $(`.${ds.alertBG}`).fadeIn();
-      return
+      return;
+    } else if (struct.length <= index) {
+      $("#alert_text").text(`No element exists at index ${index}!`);
+      $(`.${ds.alertBG}`).fadeIn();
+      return;
     }
 
     if (index === "") {
-      struct.pop();
+      this.remAnim(struct.length - 1);
     } else if (parseInt(index) >= struct.length) {
       return;
     } else {
-      let half1 = struct.slice(0, index);
-      let half2 = struct.slice(parseInt(index) + 1);
-      struct = half1.concat(half2);
+      this.remAnim(index);
     }
-    this.setState({ structure: struct });
   }
 
   enqueue(value) {
-    let struct = this.state.structure.slice();
     if (value === "") {
       $("#alert_text").text("Please select enter a value!");
       $(`.${ds.alertBG}`).fadeIn();
       return;
     }
-    struct.push(value);
-    this.setState({ structure: struct });
+    this.addAnim(Math.min(this.state.structure.length - 1, 0), value)
   }
 
   dequeue() {
     let struct = this.state.structure.slice();
-    if (struct.length === 0) {  
+    if (struct.length === 0) {
       $("#alert_text").text("Queue is empty! There's nothing to dequeue!");
       $(`.${ds.alertBG}`).fadeIn();
     }
-    struct.shift();
-    this.setState({ structure: struct });
+    this.remAnim(struct.length - 1)
   }
 
   push(value) {
-    let struct = this.state.structure.slice();
     if (value === "") {
       $("#alert_text").text("Please select enter a value!");
       $(`.${ds.alertBG}`).fadeIn();
       return;
     }
-    struct.push(value);
-    this.setState({ structure: struct });
+    this.addAnim(this.state.structure.length - 1, value)
   }
 
   pop() {
     let struct = this.state.structure.slice();
-    if (struct.length === 0) {  
+    if (struct.length === 0) {
       $("#alert_text").text("Stack is empty! There's nothing to pop!");
       $(`.${ds.alertBG}`).fadeIn();
     }
-    struct.pop();
-    this.setState({ structure: struct });
+    this.remAnim(struct.length - 1);
+  }
+
+  // animation functions
+
+  addAnim(index, value) {
+    let struct = this.state.structure;
+    if (index === struct.length - 1) {
+      struct.push(value);
+      this.setState({ structure: struct }, () => {
+        $(`#item_${index + 1}`).css("display", "none")
+        $(`#item_${index + 1}`).fadeIn(150);
+      });
+    } else {
+      struct.splice(index, 0, value);
+      let comps = [];
+      for (let i = parseInt(index); i < struct.length; i++) {
+        comps.push(`#item_${i}`);
+      }
+      
+      anime({
+        targets: comps,
+        translateX: "5em",
+        duration: 300,
+        complete: () => {
+          this.setState({ structure: struct }, () => {
+            anime({ targets: comps, translateX: 0, duration: 0 });
+          });
+        },
+      });
+    }
+  }
+
+  remAnim(index) {
+    let struct = this.state.structure;
+    if (index === struct.length - 1) {
+      $(`#item_${index}`).fadeOut(150, () => {
+        struct.pop();
+        this.setState({ structure: struct });
+      });
+    } else {
+      let half1 = struct.slice(0, index);
+      let half2 = struct.slice(parseInt(index) + 1);
+      struct = half1.concat(half2);
+  
+      let comps = [];
+      for (let i = parseInt(index) + 1; i <= struct.length; i++) {
+        comps.push(`#item_${i}`);
+      }
+  
+      var timeline = anime.timeline()
+  
+      timeline
+        .add({
+          targets: `#item_${index}`,
+          opacity: 0,
+          duration: 150,
+        })
+        .add({ targets: comps, translateX: "-5em", duration: 350 })
+        .add({
+          targets: comps,
+          translateX: 0,
+          duration: 0.1,
+          complete: () => {
+            this.setState({ structure: struct });
+            $(`.${ds.item}`).eq(index).css("opacity", "1");
+          },
+        });
+      
+    }
   }
 
   render() {
@@ -159,13 +229,12 @@ export default class DSVisualizer extends React.Component {
         <div style={{ marginLeft: "calc(32px - 1em)" }}>
           {this.state.structure.map((item, key) => {
             return (
-              <div className={ds.item} key={key}>
+              <div className={ds.item} id={`item_${key}`} key={key}>
                 {item}
               </div>
             );
           })}
         </div>
-          
       </div>
     );
   }

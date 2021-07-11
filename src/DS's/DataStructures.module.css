@@ -8,6 +8,7 @@
 
 svg {
     transform: translateX(1em);
+    display: inline;
 }
 
 #toolbar {
@@ -31,10 +32,12 @@ svg {
 
 .item {
     display: inline-block;
-    position: relative;
     border: 1px solid #000;
     padding: 1em;
     margin: 16px 0 0 1em;
+    width: 4em;
+    height: 4em;
+    text-align: center;
 }
 
 .alertBG {

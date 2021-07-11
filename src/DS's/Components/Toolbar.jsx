@@ -63,7 +63,8 @@ export default class Toolbar extends React.Component {
         <button id="dequeue" onClick={() => dequeue()}>
           Dequeue
         </button>
-        <button id="enqueueF" onClick={() => enqueue($("#text_val").val())}>
+        
+        <button id="enqueueF" onClick={() => push($("#text_val").val())}>
           Enqueue front
         </button>
         <button id="dequeueF" onClick={() => dequeue()}>
@@ -72,7 +73,7 @@ export default class Toolbar extends React.Component {
         <button id="enqueueB" onClick={() => enqueue($("#text_val").val())}>
           Enqueue back
         </button>
-        <button id="dequeueB" onClick={() => dequeue()}>
+        <button id="dequeueB" onClick={() => pop()}>
           Dequeue back
         </button>
 
