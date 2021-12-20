@@ -5,6 +5,7 @@ import NavBar from "./NavBar";
 import Alert from "./Alert";
 
 import ds from "../DataStructures.module.css";
+
 import $ from "jquery";
 import anime from "animejs";
 
@@ -14,7 +15,7 @@ export default class DSVisualizer extends React.Component {
     this.state = {
       behavior: "list",
       functions: ["add", "remove"],
-      structure: [],
+      structure: [1, 2, 3],
     };
 
     this.add = this.add.bind(this);
@@ -111,7 +112,7 @@ export default class DSVisualizer extends React.Component {
       $(`.${ds.alertBG}`).fadeIn();
       return;
     }
-    this.addAnim(Math.min(this.state.structure.length - 1, 0), value)
+    this.addAnim(Math.min(this.state.structure.length - 1, 0), value);
   }
 
   dequeue() {
@@ -120,7 +121,7 @@ export default class DSVisualizer extends React.Component {
       $("#alert_text").text("Queue is empty! There's nothing to dequeue!");
       $(`.${ds.alertBG}`).fadeIn();
     }
-    this.remAnim(struct.length - 1)
+    this.remAnim(struct.length - 1);
   }
 
   push(value) {
@@ -129,7 +130,7 @@ export default class DSVisualizer extends React.Component {
       $(`.${ds.alertBG}`).fadeIn();
       return;
     }
-    this.addAnim(this.state.structure.length - 1, value)
+    this.addAnim(this.state.structure.length - 1, value);
   }
 
   pop() {
@@ -148,8 +149,9 @@ export default class DSVisualizer extends React.Component {
     if (index === struct.length - 1) {
       struct.push(value);
       this.setState({ structure: struct }, () => {
-        $(`#item_${index + 1}`).css("display", "none")
-        $(`#item_${index + 1}`).fadeIn(150);
+        $(`#item_${index + 1}`)
+          .css("display", "none")
+          .fadeIn(150);
       });
     } else {
       struct.splice(index, 0, value);
@@ -157,7 +159,7 @@ export default class DSVisualizer extends React.Component {
       for (let i = parseInt(index); i < struct.length; i++) {
         comps.push(`#item_${i}`);
       }
-      
+
       anime({
         targets: comps,
         translateX: "5em",
@@ -182,31 +184,26 @@ export default class DSVisualizer extends React.Component {
       let half1 = struct.slice(0, index);
       let half2 = struct.slice(parseInt(index) + 1);
       struct = half1.concat(half2);
-  
+
       let comps = [];
       for (let i = parseInt(index) + 1; i <= struct.length; i++) {
         comps.push(`#item_${i}`);
       }
-  
-      var timeline = anime.timeline()
-  
-      timeline
-        .add({
-          targets: `#item_${index}`,
-          opacity: 0,
-          duration: 150,
-        })
-        .add({ targets: comps, translateX: "-5em", duration: 350 })
-        .add({
-          targets: comps,
-          translateX: 0,
-          duration: 0.1,
-          complete: () => {
-            this.setState({ structure: struct });
-            $(`.${ds.item}`).eq(index).css("opacity", "1");
-          },
-        });
-      
+
+      var timeline = anime.timeline({ autoplay: "false" });
+
+      timeline.add({ targets: comps, translateX: "-5em", duration: 350 }).add({
+        targets: comps,
+        translateX: 0,
+        duration: 0,
+        complete: () => {
+          this.setState({ structure: struct });
+        },
+      });
+
+      $(`#item_${index}`).fadeOut(150, () => {
+        timeline.play();
+      });
     }
   }
 
@@ -226,13 +223,24 @@ export default class DSVisualizer extends React.Component {
         />
         <Alert />
 
-        <div style={{ marginLeft: "calc(32px - 1em)" }}>
+        <div style={{ marginLeft: "1.5em" }}>
           {this.state.structure.map((item, key) => {
-            return (
-              <div className={ds.item} id={`item_${key}`} key={key}>
-                {item}
-              </div>
-            );
+            if (key === 0 || key === this.state.structure.length - 1) {
+              return (
+                <div className={ds.item} id={`item_${key}`} key={key}>
+                  <div>{item}</div>
+                  <div style={{ fontSize: "0.7em" }}>
+                    {key === 0 ? "Head" : "Tail"}
+                  </div>
+                </div>
+              );
+            } else {
+              return (
+                <div className={ds.item} id={`item_${key}`} key={key}>
+                  {item}
+                </div>
+              );
+            }
           })}
         </div>
       </div>

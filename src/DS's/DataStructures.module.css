@@ -32,11 +32,14 @@ svg {
 
 .item {
     display: inline-block;
-    border: 1px solid #000;
+    vertical-align: middle;
+    background: linear-gradient(rgb(0, 153, 255), rgb(68, 0, 255));
+    color: #fff;
+    border-radius: 0.25rem;
     padding: 1em;
-    margin: 16px 0 0 1em;
-    width: 4em;
-    height: 4em;
+    margin: 1em 0.5em;
+    width: 4.5em;
+    height: 4.5em;
     text-align: center;
 }
 
@@ -59,12 +62,13 @@ svg {
     left: 50%;
     transform: translateX(-50%);
     background-color: #fff;
-    border: 1px solid #000;
+    border: 1.5px solid rgb(95, 95, 95);
+    border-radius: 0.25em;
     padding: 1.5em;
 }
 
 .close {
-    top: 0.25em;
+    top: 0em;
     right: 0.5em;
     position: absolute;
     cursor: pointer;

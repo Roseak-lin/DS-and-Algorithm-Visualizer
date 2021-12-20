@@ -2,18 +2,13 @@ import React from "react";
 import $ from "jquery";
 
 import Nav from "react-bootstrap/Nav";
+import Button from "react-bootstrap/Button";
 import NavDropdown from "react-bootstrap/NavDropdown";
 import gear from "../Images/gear.png";
 
 import algo from "../AlgoVisualizer.module.css";
 
 export default class NavigationBar extends React.Component {
-  componentDidMount() {
-    document
-      .querySelector(".nav-link")
-      .addEventListener("hover", () => console.log("h"));
-  }
-
   render() {
     const {
       changeAlgorithm,
@@ -26,7 +21,7 @@ export default class NavigationBar extends React.Component {
     return (
       <Nav
         justify
-        id="nav"
+        id="nav_dark"
         fill="true"
         variant="pills"
         onSelect={(eventKey) => {
@@ -34,7 +29,13 @@ export default class NavigationBar extends React.Component {
         }}
       >
         <Nav.Item className="nav_title">
-          <Nav.Link>Algorithm Visualizer</Nav.Link>
+          <Nav.Link
+            onClick={() => {
+              window.location.href = "/";
+            }}
+          >
+            Algorithm Visualizer
+          </Nav.Link>
         </Nav.Item>
 
         <NavDropdown title="Unweighted algorithms">
@@ -56,10 +57,14 @@ export default class NavigationBar extends React.Component {
           </NavDropdown.Item>
         </NavDropdown>
 
-        <button className={algo.navbar_btn} onClick={onClick}>
+        <Button
+          variant="outline-light"
+          onClick={onClick}
+          style={{ margin: "auto 1%" }}
+        >
           Visualize
           {this.props.algorithm == null ? "" : " " + this.props.algorithm}!
-        </button>
+        </Button>
 
         <NavDropdown title="Weighted algorithms">
           <NavDropdown.Item

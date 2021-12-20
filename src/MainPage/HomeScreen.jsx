@@ -30,7 +30,7 @@ export default class HomeScreen extends React.Component {
     return (
       <div>
         <div className={home.pageHeader}>
-          <h1 className={home.headerText}>What Do You Want to See Visualized?</h1>
+          <h1>What Do You Want to See Visualized?</h1>
         </div>
         <div className={home.splitscreen}>
           <div className={`${home.panel} ${home.right}`}>

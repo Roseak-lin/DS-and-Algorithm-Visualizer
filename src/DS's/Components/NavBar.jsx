@@ -18,7 +18,9 @@ export default class NavBar extends React.Component {
         }}
       >
         <Nav.Item className="nav_title">
-          <Nav.Link>Data Structure Visualizer</Nav.Link>
+          <Nav.Link onClick={() => {
+            window.location.href = "/"
+          }}>Data Structure Visualizer</Nav.Link>
         </Nav.Item>
 
         <Nav.Item>
@@ -26,7 +28,7 @@ export default class NavBar extends React.Component {
             Dynamic Array (List)
             <OverlayTrigger
               placement="bottom"
-              delay={{ show: 150, hide: 300 }}
+              delay={{ hide: 100 }}
               overlay={(props) => {
                 return <Tooltip {...props}>A list is a very flexible data structure that allows for insertion and deletion at any index</Tooltip>;
               }}
@@ -41,7 +43,7 @@ export default class NavBar extends React.Component {
             Set
             <OverlayTrigger
               placement="bottom"
-              delay={{ show: 150, hide: 300 }}
+              delay={{ hide: 100 }}
               overlay={(props) => {
                 return <Tooltip {...props}>A set is very similar to a list, but cannot store duplicate items</Tooltip>;
               }}
@@ -56,7 +58,7 @@ export default class NavBar extends React.Component {
             Queue
             <OverlayTrigger
               placement="bottom"
-              delay={{ show: 150, hide: 300 }}
+              delay={{ hide: 100 }}
               overlay={(props) => {
                 return (
                   <Tooltip {...props}>
@@ -76,7 +78,7 @@ export default class NavBar extends React.Component {
             Deque
             <OverlayTrigger
               placement="bottom"
-              delay={{ show: 150, hide: 300 }}
+              delay={{ hide: 100 }}
               overlay={(props) => {
                 return (
                   <Tooltip {...props}>
@@ -97,7 +99,7 @@ export default class NavBar extends React.Component {
             Stack
             <OverlayTrigger
               placement="bottom"
-              delay={{ show: 150, hide: 300 }}
+              delay={{ hide: 100 }}
               overlay={(props) => {
                 return <Tooltip {...props}>A stack is a data structure that only allows items to be added and removed from the front of the data structure</Tooltip>;
               }}

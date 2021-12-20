@@ -3,7 +3,6 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    border-bottom: 1px solid rgb(0, 0, 0);
 }
 
 /* Panels. */
@@ -31,6 +30,7 @@
 
 .panel .title {
     width: 25%;
+    text-shadow: 0 1px 4px #ccc;
     position: absolute;
     top: 50%;
     transform: translateY(-50%);

@@ -25,3 +25,20 @@
 .nav div {
     width: 100%;
 }
+
+#nav_dark {
+    height: 6em;
+    padding: 0.5em;
+    margin-bottom: auto;
+    align-items: center;
+    background-color: rgb(37, 37, 37);
+}
+
+#nav_dark>div>* {
+    color: #fff;
+}
+
+#nav_dark>.show>* {
+    background-color: #fff !important;
+    color: #000 !important;
+}

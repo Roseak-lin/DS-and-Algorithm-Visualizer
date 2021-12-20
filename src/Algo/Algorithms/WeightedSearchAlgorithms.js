@@ -1,10 +1,13 @@
-const rows = 25;
-const cols = 72;
+const ROWS = 25;
+const COLS = 72;
 
 var visited;
 var previousNode;
 
 export function dijkstra(grid, startX, startY, endX, endY) {
+
+    // THIS SHIT IS PLAIN WRONG | NEED FIX //
+    
     // reset visited grid and previousNode grid
     resetVisited();
     resetPreviousNode();
@@ -17,6 +20,7 @@ export function dijkstra(grid, startX, startY, endX, endY) {
         }
 
         visited[node[1]][node[0]] = true;
+        // pushing second and third element to allow backtracking to highlight the shortest path
         path.push([node[0], node[1], node[2], node[3]]);
 
         if (node[2] != null && previousNode[node[1]][node[0]] === null) {
@@ -27,8 +31,7 @@ export function dijkstra(grid, startX, startY, endX, endY) {
             return path;
         }
 
-        // pushing second and third element to allow backtracking to highlight the shortest path
-        if (node[0] + 1 < cols) {
+        if (node[0] + 1 < COLS) {
             q.push([node[0] + 1, node[1], node[0], node[1]]);
         }
 
@@ -36,7 +39,7 @@ export function dijkstra(grid, startX, startY, endX, endY) {
             q.push([node[0] - 1, node[1], node[0], node[1]]);
         }
 
-        if (node[1] + 1 < rows) {
+        if (node[1] + 1 < ROWS) {
             q.push([node[0], node[1] + 1, node[0], node[1]]);
         }
 
@@ -75,7 +78,7 @@ export function astar (grid, startX, startY, endX, endY) {
         }
 
 
-        if (node[0] + 1 < cols) {
+        if (node[0] + 1 < COLS) {
             q.push([node[0] + 1, node[1], node[0], node[1], node[4] + grid[node[1]][node[0]].weight]);
         }
 
@@ -83,7 +86,7 @@ export function astar (grid, startX, startY, endX, endY) {
             q.push([node[0] - 1, node[1], node[0], node[1], node[4] + grid[node[1]][node[0]].weight]);
         }
 
-        if (node[1] + 1 < rows) {
+        if (node[1] + 1 < ROWS) {
             q.push([node[0], node[1] + 1, node[0], node[1], node[4] + grid[node[1]][node[0]].weight]);
         }
 
@@ -117,12 +120,12 @@ export function weightedShortestPath(startX, startY, path) {
     return shortestPath;
 }
 
-// method that re initializes the visited 
+// method that re-initializes the visited 
 function resetVisited() {
     visited = [];
-    for (let i = 0; i < rows; i++) {
+    for (let i = 0; i < ROWS; i++) {
         visited.push([]);
-        for (let j = 0; j < cols; j++) {
+        for (let j = 0; j < COLS; j++) {
             visited[i].push(false);
         }
     }
@@ -131,9 +134,9 @@ function resetVisited() {
 // function to reset grid that helps with finding the shortest path
 function resetPreviousNode() {
     previousNode = [];
-    for (let i = 0; i < rows; i++) {
+    for (let i = 0; i < ROWS; i++) {
         previousNode.push([]);
-        for (let j = 0; j < cols; j++) {
+        for (let j = 0; j < COLS; j++) {
             previousNode[i].push(null);
         }
     }

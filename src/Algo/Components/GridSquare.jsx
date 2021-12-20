@@ -7,8 +7,6 @@ import algo from "../AlgoVisualizer.module.css";
 export default class Square extends React.Component {
   render() {
     const {
-      x,
-      y,
       id,
       handleClick,
       className,
@@ -19,6 +17,9 @@ export default class Square extends React.Component {
       weight,
       dragAndDropUpdate,
     } = this.props;
+
+    let coords = id.split("-")
+    let x = coords[1], y = coords[0]
 
     if (isStart) {
       return (

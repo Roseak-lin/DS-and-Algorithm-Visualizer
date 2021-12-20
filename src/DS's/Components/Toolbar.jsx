@@ -52,7 +52,7 @@ export default class Toolbar extends React.Component {
         <input type="text" placeholder="Index" maxLength="3" id="text_rem" />
         <button
           id="remove"
-          onClick={() => remove($("#text_rem").val(), $("#text_val").val())}
+          onClick={() => remove($("#text_rem").val())}
         >
           Remove at index
         </button>
@@ -67,7 +67,7 @@ export default class Toolbar extends React.Component {
         <button id="enqueueF" onClick={() => push($("#text_val").val())}>
           Enqueue front
         </button>
-        <button id="dequeueF" onClick={() => dequeue()}>
+        <button id="dequeueF" onClick={() => remove(0)}>
           Dequeue front
         </button>
         <button id="enqueueB" onClick={() => enqueue($("#text_val").val())}>

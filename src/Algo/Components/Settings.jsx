@@ -22,9 +22,9 @@ export default class Settings extends React.Component {
     this.props.changeSpeed(speed);
 
     // swap the active button
-    let temp = active;
-    active = button;
-    button = temp;
+    active ^= button;
+    button ^= active;
+    active ^= button;
   }
 
   render() {
