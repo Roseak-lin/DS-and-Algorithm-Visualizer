@@ -20,8 +20,6 @@ import algo from "../AlgoVisualizer.module.css";
 const GRID_ROWS = 25;
 const GRID_COLS = 72;
 
-const EMPTY_GRID = [];
-
 var unweightedStartNodeX = 5;
 var unweightedStartNodeY = 12;
 var unweightedEndNodeX = 66;
@@ -46,21 +44,6 @@ export default class Grid extends React.Component {
   }
 
   componentDidMount() {
-    // initialize blank grid
-    for (let i = 0; i < GRID_ROWS; i++) {
-      EMPTY_GRID.push([]);
-      for (let j = 0; j < GRID_COLS; j++) {
-        EMPTY_GRID[i].push({
-          id: i + "-" + j,
-          isWall: false,
-          isStart: false,
-          isEnd: false,
-          className: `${algo.grid_square} ${algo.unselected}`,
-          weight: 0,
-        });
-      }
-    }
-
     // initialize grids
     let uGrid = [],
       wGrid = [];
@@ -132,7 +115,7 @@ export default class Grid extends React.Component {
 
   /********************* Unweighted algorithms *********************/
   animateBFS(grid) {
-    $(`.${algo.grid}`).css("pointer-events", "none");
+    $(`.${algo.algo_app}`).css("pointer-events", "none");
     const path = bfs(
       grid,
       unweightedStartNodeX,
@@ -154,7 +137,7 @@ export default class Grid extends React.Component {
     }
 
     setTimeout(() => {
-      $(`.${algo.grid}`).css("pointer-events", "auto");
+      $(`.${algo.algo_app}`).css("pointer-events", "auto");
       this.drawUnweightedShortestPath(
         unweightedStartNodeX,
         unweightedStartNodeY,
@@ -168,7 +151,7 @@ export default class Grid extends React.Component {
   }
 
   animateDFS(grid) {
-    $(`.${algo.grid}`).css("pointer-events", "none");
+    $(`.${algo.algo_app}`).css("pointer-events", "none");
     const path = dfs(
       grid,
       unweightedStartNodeX,
@@ -189,7 +172,7 @@ export default class Grid extends React.Component {
       }, speed * i);
     }
     setTimeout(() => {
-      $(`.${algo.grid}`).css("pointer-events", "auto");
+      $(`.${algo.algo_app}`).css("pointer-events", "auto");
       this.drawUnweightedShortestPath(
         unweightedStartNodeX,
         unweightedStartNodeY,
@@ -205,7 +188,7 @@ export default class Grid extends React.Component {
   /********************* Weighted algorithms *********************/
 
   animateDijkstra(grid) {
-    $(`.${algo.grid}`).css("pointer-events", "none");
+    $(`.${algo.algo_app}`).css("pointer-events", "none");
     const path = dijkstra(
       grid,
       weightedStartNodeX,
@@ -227,7 +210,7 @@ export default class Grid extends React.Component {
     }
 
     setTimeout(() => {
-      $(`.${algo.grid}`).css("pointer-events", "auto");
+      $(`.${algo.algo_app}`).css("pointer-events", "auto");
       this.drawWeightedShortestPath(
         weightedEndNodeX,
         weightedEndNodeY,
@@ -239,7 +222,7 @@ export default class Grid extends React.Component {
   }
 
   animateAstar(grid) {
-    $(`.${algo.grid}`).css("pointer-events", "none");
+    $(`.${algo.algo_app}`).css("pointer-events", "none");
     const path = astar(
       grid,
       weightedStartNodeX,
@@ -302,7 +285,7 @@ export default class Grid extends React.Component {
     }
 
     setTimeout(() => {
-      $(`.${algo.grid}`).css("pointer-events", "auto");
+      $(`.${algo.algo_app}`).css("pointer-events", "auto");
       this.setState({ mainGrid: grid });
     }, speed * shortestPath.length * 2);
   }
@@ -319,7 +302,7 @@ export default class Grid extends React.Component {
       weightedStartNodeY,
       path
     );
-    for (let i = 0; i < shortestPath.length; i++) {
+    for (let i = 0; i < shortestPath.length - 1; i++) {
       setTimeout(() => {
         let id = shortestPath[i][1] + "-" + shortestPath[i][0];
         $("#" + id).attr("class", `${algo.grid_square} ${algo.shortestpath}`);
@@ -330,7 +313,7 @@ export default class Grid extends React.Component {
     }
 
     setTimeout(() => {
-      $(`.${algo.grid}`).css("pointer-events", "auto");
+      $(`.${algo.algo_app}`).css("pointer-events", "auto");
       this.setState({ mainGrid: grid });
     }, shortestPath.length * speed * 2);
   }

@@ -10,7 +10,7 @@ function App() {
       <div
         id="repoLink"
         onClick={() => {
-          window.open("https://github.com/JerryLin1/AngryRhymeTown");
+          window.open("https://github.com/Roseak-lin/DS-and-Algorithm-Visualizer");
         }}
       >
         Github Repository{" "}
