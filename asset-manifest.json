@@ -1,8 +1,8 @@
 {
   "files": {
-    "main.css": "/DS-and-Algorithm-Visualizer/static/css/main.679c5c17.chunk.css",
-    "main.js": "/DS-and-Algorithm-Visualizer/static/js/main.ab5463ac.chunk.js",
-    "main.js.map": "/DS-and-Algorithm-Visualizer/static/js/main.ab5463ac.chunk.js.map",
+    "main.css": "/DS-and-Algorithm-Visualizer/static/css/main.435b2f2f.chunk.css",
+    "main.js": "/DS-and-Algorithm-Visualizer/static/js/main.fab2a62c.chunk.js",
+    "main.js.map": "/DS-and-Algorithm-Visualizer/static/js/main.fab2a62c.chunk.js.map",
     "runtime-main.js": "/DS-and-Algorithm-Visualizer/static/js/runtime-main.36c89479.js",
     "runtime-main.js.map": "/DS-and-Algorithm-Visualizer/static/js/runtime-main.36c89479.js.map",
     "static/css/2.4c97ca4f.chunk.css": "/DS-and-Algorithm-Visualizer/static/css/2.4c97ca4f.chunk.css",
@@ -12,7 +12,7 @@
     "static/js/3.c22aa454.chunk.js.map": "/DS-and-Algorithm-Visualizer/static/js/3.c22aa454.chunk.js.map",
     "index.html": "/DS-and-Algorithm-Visualizer/index.html",
     "static/css/2.4c97ca4f.chunk.css.map": "/DS-and-Algorithm-Visualizer/static/css/2.4c97ca4f.chunk.css.map",
-    "static/css/main.679c5c17.chunk.css.map": "/DS-and-Algorithm-Visualizer/static/css/main.679c5c17.chunk.css.map",
+    "static/css/main.435b2f2f.chunk.css.map": "/DS-and-Algorithm-Visualizer/static/css/main.435b2f2f.chunk.css.map",
     "static/js/2.1089b5aa.chunk.js.LICENSE.txt": "/DS-and-Algorithm-Visualizer/static/js/2.1089b5aa.chunk.js.LICENSE.txt",
     "static/media/arrow_right.91c92c08.jpg": "/DS-and-Algorithm-Visualizer/static/media/arrow_right.91c92c08.jpg",
     "static/media/circle.abb2dcd5.png": "/DS-and-Algorithm-Visualizer/static/media/circle.abb2dcd5.png",
@@ -22,7 +22,7 @@
     "static/js/runtime-main.36c89479.js",
     "static/css/2.4c97ca4f.chunk.css",
     "static/js/2.1089b5aa.chunk.js",
-    "static/css/main.679c5c17.chunk.css",
-    "static/js/main.ab5463ac.chunk.js"
+    "static/css/main.435b2f2f.chunk.css",
+    "static/js/main.fab2a62c.chunk.js"
   ]
 }
