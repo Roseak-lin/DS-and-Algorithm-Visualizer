@@ -25,6 +25,8 @@ export default class Settings extends React.Component {
     active ^= button;
     button ^= active;
     active ^= button;
+
+    console.log(active,  button);
   }
 
   render() {

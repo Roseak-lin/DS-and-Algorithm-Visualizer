@@ -83,12 +83,10 @@
 .grid_square.selected {
     background-color: #000000;
     border: 1px solid rgb(128, 128, 128);
-    transition: 0.5s;
 }
 
 .grid_square.unselected {
     background-color: transparent;
-    transition: 0.5s;
 }
 
 .grid_square.start, .grid_square.end {

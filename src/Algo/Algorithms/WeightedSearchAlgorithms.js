@@ -50,7 +50,6 @@ export function dijkstra(grid, startX, startY, endX, endY) {
             return a[4] - b[4];
         });
     }
-    return path;
 }
 
 export function astar(grid, startX, startY, endX, endY) {
@@ -70,41 +69,33 @@ export function astar(grid, startX, startY, endX, endY) {
         path.push([x, y, prevX, prevY]);
 
         if (x === endX && y === endY) {
-            break;
+            return path;
         }
         if (prevX !== null && previousNode[y][x] === null) {
             previousNode[y][x] = [prevX, prevY];
         }
 
         if (x + 1 < COLS) {
-            q.push([x + 1, y, x, y, node[4] + grid[y][x].weight]);
+            q.push([x + 1, y, x, y, weight + grid[y][x].weight]);
         }
 
         if (x - 1 >= 0) {
-            q.push([x - 1, y, x, y, node[4] + grid[y][x].weight]);
+            q.push([x - 1, y, x, y, weight + grid[y][x].weight]);
         }
 
         if (y + 1 < ROWS) {
-            q.push([x, y + 1, x, y, node[4] + grid[y][x].weight]);
+            q.push([x, y + 1, x, y, weight + grid[y][x].weight]);
         }
 
         if (y - 1 >= 0) {
-            q.push([x, y - 1, x, y, node[4] + grid[y][x].weight]);
+            q.push([x, y - 1, x, y, weight + grid[y][x].weight]);
         }
 
-        // sort by path weight and manhatten distance
+        // sort by path weight and euclidian distance
         q.sort((a, b) => {
-            // return (a[4] + (Math.abs(a[1] - endY) + Math.abs(a[0] - endX))) - (b[4] + (Math.abs(b[1] - endY) + Math.abs(b[0] - endX)));
-            if (a[4] !== b[4]) {
-                return a[4] - b[4]
-            } else {
-                return (Math.abs(a[1] - endY) + Math.abs(a[0] - endX)) - (Math.abs(b[1] - endY) + Math.abs(b[0] - endX))
-            }
-
+            return (a[4] + Math.sqrt(Math.abs(a[1] - endY) + Math.abs(a[0] - endX))) - (b[4] + Math.sqrt(Math.abs(b[1] - endY) + Math.abs(b[0] - endX)));
         });
     }
-
-    return path;
 }
 
 // function that will return the shortest path
