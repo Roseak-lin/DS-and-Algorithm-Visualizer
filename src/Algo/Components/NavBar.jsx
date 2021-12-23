@@ -21,7 +21,7 @@ export default class NavigationBar extends React.Component {
     return (
       <Nav
         justify
-        id="nav_dark"
+        id="nav"
         fill="true"
         variant="pills"
         onSelect={(eventKey) => {
@@ -61,6 +61,7 @@ export default class NavigationBar extends React.Component {
           variant="outline-light"
           onClick={onClick}
           style={{ margin: "auto 1%" }}
+          id="visualize-btn"
         >
           Visualize
           {this.props.algorithm == null ? "" : " " + this.props.algorithm}!

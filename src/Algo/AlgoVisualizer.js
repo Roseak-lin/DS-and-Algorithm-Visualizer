@@ -3,7 +3,7 @@ import Popup from "./Components/PopupWarning";
 
 function App() {
   return (
-    <div className="App">
+    <div>
       <Popup />
       <Grid />
       

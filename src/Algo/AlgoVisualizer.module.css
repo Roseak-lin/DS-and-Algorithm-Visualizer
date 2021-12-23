@@ -1,5 +1,4 @@
 .algo_app {
-    background: linear-gradient(rgb(245, 244, 244), rgb(228, 228, 228));
     min-width: 90vw;
     align-items: center;
     height: 100vh;
@@ -96,7 +95,7 @@
 .grid_square.visited {
     animation: visit_square 0.3s;
     color: #fff;
-    background-color: #0059ff;
+    background-color: #1165ff;
     border: 1px solid rgb(129, 129, 129);
 }
 
@@ -107,14 +106,14 @@
     }
 
     to {
-        background-color: #0077d8;
+        background-color: #1165ff;
         border: 0.05vw solid rgb(255, 255, 255, 0.5);
     }
 }
 
 .grid_square.shortestpath {
     color: #000;
-    background-color: #00d82f;
+    background-color: #00d81d;
     border: 1px solid rgb(77, 77, 77, 0.5);
     transition: 0.3s;
 }
@@ -140,15 +139,6 @@
 }
 
 /* Nav bar */
-
-.navbar_btn {
-    margin: 0 0.25em 0 0.25em;
-    border-radius: 0.5em;
-    background-color: #39bffd;
-    color: #fff;
-    border: none;
-    height: 2em;
-}
 
 #settings_btn {
     margin: 0 1em 0 0;
@@ -241,6 +231,6 @@ table button.inactive {
 }
 
 table button.active {
-    background-color: #007bff;
+    background-color: #353535;
     color: #fff;
 }

@@ -1,9 +1,24 @@
 #nav {
-    margin-top: 0.5em;
+    /* margin-top: 0.5em;
     margin-bottom: 1em;
     margin-left: 0.25em;
     margin-right: 0.25em;
+    align-items: center; */
+
+    height: 6em;
+    padding: 0.5em;
+    margin: 0 !important;
     align-items: center;
+    background-color: rgb(37, 37, 37);
+}
+
+#nav>div>* {
+    color: #fff;
+}
+
+#nav>.show>* {
+    background-color: #fff !important;
+    color: #000 !important;
 }
 
 .nav_title {
@@ -24,21 +39,4 @@
 
 .nav div {
     width: 100%;
-}
-
-#nav_dark {
-    height: 6em;
-    padding: 0.5em;
-    margin-bottom: auto;
-    align-items: center;
-    background-color: rgb(37, 37, 37);
-}
-
-#nav_dark>div>* {
-    color: #fff;
-}
-
-#nav_dark>.show>* {
-    background-color: #fff !important;
-    color: #000 !important;
 }

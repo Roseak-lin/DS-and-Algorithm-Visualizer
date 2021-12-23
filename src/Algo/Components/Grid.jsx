@@ -16,6 +16,8 @@ import {
 import Settings from "./Settings";
 
 import algo from "../AlgoVisualizer.module.css";
+import { useState } from "react";
+import { useEffect } from "react";
 
 const GRID_ROWS = 25;
 const GRID_COLS = 72;
@@ -40,6 +42,7 @@ export default class Grid extends React.Component {
       currGrid: "unweighted",
       algorithm: null,
       speed: 20,
+      isRunning: false,
     };
   }
 
@@ -266,6 +269,7 @@ export default class Grid extends React.Component {
     speed,
     path
   ) {
+    this.setState({ isRunning: false });
     let grid = this.state.mainGrid;
     const shortestPath = unweightedShortestPath(
       unweightedStartNodeX,
@@ -296,6 +300,7 @@ export default class Grid extends React.Component {
     speed,
     path
   ) {
+    this.setState({ isRunning: false });
     let grid = this.state.mainGrid;
     const shortestPath = weightedShortestPath(
       weightedStartNodeX,
@@ -325,15 +330,19 @@ export default class Grid extends React.Component {
     switch (algorithm) {
       case "BFS":
         this.animateBFS(mainGrid);
+        this.setState({ isRunning: true });
         break;
       case "DFS":
         this.animateDFS(mainGrid);
+        this.setState({ isRunning: true });
         break;
       case "Dijkstra's":
         this.animateDijkstra(mainGrid);
+        this.setState({ isRunning: true });
         break;
       case "A*":
         this.animateAstar(mainGrid);
+        this.setState({ isRunning: true });
         break;
       default:
         $(`#${algo.popup}`).fadeIn(150);
@@ -399,8 +408,13 @@ export default class Grid extends React.Component {
           ) {
             grid[i][j].weight = 0;
             continue;
+          } else {
+            if (Math.random() > 0.5) {
+              grid[i][j].weight = Math.trunc(Math.random() * 4 + 1);
+            } else {
+              grid[i][j].weight = 0;
+            }
           }
-          grid[i][j].weight = Math.trunc(Math.random() * 5);
         }
       }
       this.setState({ mainGrid: grid });
@@ -540,10 +554,37 @@ export default class Grid extends React.Component {
             );
           })}
         </div>
+        <Timer isRunning={this.state.isRunning} />
       </div>
     );
   }
 }
+
+const Timer = (props) => {
+  const [time, setTime] = useState(0);
+
+  document.addEventListener("click", (e) => {
+    if (e.target.id === "visualize-btn") {
+      setTime(0);
+    }
+  });
+  useEffect(() => {
+    if (props.isRunning == false) {
+      return;
+    }
+    const interval = setInterval(() => {
+      setTime(time + 0.1);
+    }, 100);
+
+    return () => clearInterval(interval);
+  });
+
+  return (
+    <div style={{ marginTop: "1em", fontSize: "1.5em" }}>
+      Time elapsed: {time.toFixed(1)} seconds
+    </div>
+  );
+};
 
 // JavaScript functions
 

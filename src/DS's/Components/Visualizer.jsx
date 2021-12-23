@@ -163,7 +163,7 @@ export default class DSVisualizer extends React.Component {
       anime({
         targets: comps,
         translateX: "5em",
-        duration: 300,
+        duration: 250,
         complete: () => {
           this.setState({ structure: struct }, () => {
             anime({ targets: comps, translateX: 0, duration: 0 });
@@ -190,9 +190,10 @@ export default class DSVisualizer extends React.Component {
         comps.push(`#item_${i}`);
       }
 
+      // get rid of animation and just use fade?
       var timeline = anime.timeline({ autoplay: "false" });
 
-      timeline.add({ targets: comps, translateX: "-5em", duration: 350 }).add({
+      timeline.add({ targets: comps, translateX: "-5em", duration: 250 }).add({
         targets: comps,
         translateX: 0,
         duration: 0,
@@ -201,15 +202,15 @@ export default class DSVisualizer extends React.Component {
         },
       });
 
-      $(`#item_${index}`).fadeOut(150, () => {
-        timeline.play();
-      });
+      $(`#item_${index}`)
+        .fadeOut(150)
+        .fadeIn(150);
     }
   }
 
   render() {
     return (
-      <div className={ds.DSVisualizer}>
+      <div>
         <NavBar onchange={(key) => this.handleChange(key)} />
         <Toolbar
           functions={this.state.functions}
@@ -226,14 +227,26 @@ export default class DSVisualizer extends React.Component {
         <div style={{ marginLeft: "1.5em" }}>
           {this.state.structure.map((item, key) => {
             if (key === 0 || key === this.state.structure.length - 1) {
-              return (
-                <div className={ds.item} id={`item_${key}`} key={key}>
+              if (this.state.structure.length - 1 == 0) {
+                return (
+                  <div className={ds.item} id={`item_${key}`} key={key}>
+                  <div>{item}</div>
+                  <div style={{ fontSize: "0.65em" }}>
+                    Head {' & '}
+                    Tail
+                  </div>
+                </div>
+              );
+              } else {
+                return (
+                  <div className={ds.item} id={`item_${key}`} key={key}>
                   <div>{item}</div>
                   <div style={{ fontSize: "0.7em" }}>
                     {key === 0 ? "Head" : "Tail"}
                   </div>
                 </div>
               );
+            }
             } else {
               return (
                 <div className={ds.item} id={`item_${key}`} key={key}>
