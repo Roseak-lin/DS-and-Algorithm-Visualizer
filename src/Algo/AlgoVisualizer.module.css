@@ -234,3 +234,14 @@ table button.active {
     background-color: #353535;
     color: #fff;
 }
+
+/* legend */
+.legend {
+    padding-top: 1em;
+    padding-left: 5em;
+}
+
+.legend_label::before {
+    content: "=";
+    margin: 0 8px;
+}
