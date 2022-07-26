@@ -6,21 +6,21 @@ import ds from "../DataStructures.module.css";
 export default class Alert extends React.Component {
   componentDidMount() {
     window.onclick = (e) => {
-      if (e.target.className === `${ds.alertBG}`) {
-        $(`.${ds.alertBG}`).fadeOut();
+      if (e.target.id === `alert`) {
+        $(`#alert`).fadeOut();
       }
     };
   }
 
   render() {
     return (
-      <div className={ds.alertBG}>
+      <div className={ds.alertBG} id="alert">
         <div className={ds.alert}>
           <div id="alert_text" />
           <span
             className={ds.close}
             onClick={() => {
-              $(`.${ds.alertBG}`).fadeOut();
+              $(`#alert`).fadeOut();
             }}
           >
             &times;

@@ -4,7 +4,6 @@ import $ from "jquery";
 import ds from "../DataStructures.module.css";
 
 export default class Toolbar extends React.Component {
-
   componentDidMount() {
     // make list functions visible
     $("#text_val, #add, #text_add, #remove, #text_rem").css("display", "block");
@@ -40,20 +39,30 @@ export default class Toolbar extends React.Component {
           maxLength="3"
           id="text_val"
           style={{ marginRight: `1.5em` }}
+          autoComplete="off"
         />
 
-        <input type="text" placeholder="Index" maxLength="3" id="text_add" />
+        <input
+          type="text"
+          placeholder="Index"
+          maxLength="3"
+          id="text_add"
+          autoComplete="off"
+        />
         <button
           id="add"
           onClick={() => add($("#text_add").val(), $("#text_val").val())}
         >
           Add at index
         </button>
-        <input type="text" placeholder="Index" maxLength="3" id="text_rem" />
-        <button
-          id="remove"
-          onClick={() => remove($("#text_rem").val())}
-        >
+        <input
+          type="text"
+          placeholder="Index"
+          maxLength="3"
+          id="text_rem"
+          autoComplete="off"
+        />
+        <button id="remove" onClick={() => remove($("#text_rem").val())}>
           Remove at index
         </button>
 
@@ -63,7 +72,7 @@ export default class Toolbar extends React.Component {
         <button id="dequeue" onClick={() => dequeue()}>
           Dequeue
         </button>
-        
+
         <button id="enqueueF" onClick={() => push($("#text_val").val())}>
           Enqueue front
         </button>

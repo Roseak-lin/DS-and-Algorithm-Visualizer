@@ -6,7 +6,6 @@ import NavigationBar from "./NavBar";
 import { bfs, dfs, unweightedShortestPath } from "../Algorithms/UnweightedSearchAlgorithms";
 import { dijkstra, astar, weightedShortestPath } from "../Algorithms/WeightedSearchAlgorithms";
 import Settings from "./Settings";
-import Legend from "./Legend";
 
 import algo from "../AlgoVisualizer.module.css";
 import { useState } from "react";
@@ -430,7 +429,6 @@ export default class Grid extends React.Component {
                     generateNewGrid={() => this.generateRandomGrid()}
                     clearWeightsAndWalls={() => this.clearWeightsAndWalls()}
                 />
-                <Legend graph={this.state.currGrid} />
                 <div id={`${algo.grid}`}>
                     {mainGrid.map((row, key) => {
                         return (

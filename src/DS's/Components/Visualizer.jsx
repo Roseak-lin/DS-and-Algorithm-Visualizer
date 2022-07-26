@@ -7,7 +7,6 @@ import Alert from "./Alert";
 import ds from "../DataStructures.module.css";
 
 import $ from "jquery";
-import anime from "animejs";
 
 export default class DSVisualizer extends React.Component {
   constructor(props) {
@@ -60,13 +59,13 @@ export default class DSVisualizer extends React.Component {
   add(index, value) {
     if (value === "") {
       $("#alert_text").text("Please select enter a value!");
-      $(`.${ds.alertBG}`).fadeIn();
+      $(`#alert`).fadeIn();
       return;
     }
 
     if (this.state.behavior === "set" && this.state.structure.includes(value)) {
       $("#alert_text").text("The value is already in the set!");
-      $(`.${ds.alertBG}`).fadeIn();
+      $(`#alert`).fadeIn();
       return;
     }
 
@@ -75,7 +74,7 @@ export default class DSVisualizer extends React.Component {
       this.addAnim(struct.length - 1, value);
     } else if (parseInt(index) > struct.length) {
       $("#alert_text").text(`Cannot add at index ${index}`);
-      $(`.${ds.alertBG}`).fadeIn();
+      $(`#alert`).fadeIn();
       return;
     } else {
       this.addAnim(index, value);
@@ -89,11 +88,11 @@ export default class DSVisualizer extends React.Component {
       $("#alert_text").text(
         `The ${this.state.behavior} is empty! There's nothing to remove!`
       );
-      $(`.${ds.alertBG}`).fadeIn();
+      $(`#alert`).fadeIn();
       return;
     } else if (struct.length <= index) {
       $("#alert_text").text(`No element exists at index ${index}!`);
-      $(`.${ds.alertBG}`).fadeIn();
+      $(`#alert`).fadeIn();
       return;
     }
 
@@ -109,7 +108,7 @@ export default class DSVisualizer extends React.Component {
   enqueue(value) {
     if (value === "") {
       $("#alert_text").text("Please select enter a value!");
-      $(`.${ds.alertBG}`).fadeIn();
+      $(`#alert`).fadeIn();
       return;
     }
     this.addAnim(Math.min(this.state.structure.length - 1, 0), value);
@@ -119,7 +118,7 @@ export default class DSVisualizer extends React.Component {
     let struct = this.state.structure.slice();
     if (struct.length === 0) {
       $("#alert_text").text("Queue is empty! There's nothing to dequeue!");
-      $(`.${ds.alertBG}`).fadeIn();
+      $(`#alert`).fadeIn();
     }
     this.remAnim(struct.length - 1);
   }
@@ -127,7 +126,7 @@ export default class DSVisualizer extends React.Component {
   push(value) {
     if (value === "") {
       $("#alert_text").text("Please select enter a value!");
-      $(`.${ds.alertBG}`).fadeIn();
+      $(`#alert`).fadeIn();
       return;
     }
     this.addAnim(this.state.structure.length - 1, value);
@@ -137,7 +136,7 @@ export default class DSVisualizer extends React.Component {
     let struct = this.state.structure.slice();
     if (struct.length === 0) {
       $("#alert_text").text("Stack is empty! There's nothing to pop!");
-      $(`.${ds.alertBG}`).fadeIn();
+      $(`#alert`).fadeIn();
     }
     this.remAnim(struct.length - 1);
   }
@@ -160,15 +159,8 @@ export default class DSVisualizer extends React.Component {
         comps.push(`#item_${i}`);
       }
 
-      anime({
-        targets: comps,
-        translateX: "5em",
-        duration: 250,
-        complete: () => {
-          this.setState({ structure: struct }, () => {
-            anime({ targets: comps, translateX: 0, duration: 0 });
-          });
-        },
+      this.setState({ structure: struct }, () => {
+        $(`#item_${index}`).css("display", "none").fadeIn(150);
       });
     }
   }
@@ -190,21 +182,9 @@ export default class DSVisualizer extends React.Component {
         comps.push(`#item_${i}`);
       }
 
-      // get rid of animation and just use fade?
-      var timeline = anime.timeline({ autoplay: "false" });
-
-      timeline.add({ targets: comps, translateX: "-5em", duration: 250 }).add({
-        targets: comps,
-        translateX: 0,
-        duration: 0,
-        complete: () => {
-          this.setState({ structure: struct });
-        },
-      });
-
       $(`#item_${index}`)
         .fadeOut(150)
-        .fadeIn(150);
+        .fadeIn(0, () => this.setState({ structure: struct }));
     }
   }
 
@@ -212,49 +192,51 @@ export default class DSVisualizer extends React.Component {
     return (
       <div>
         <NavBar onchange={(key) => this.handleChange(key)} />
-        <Toolbar
-          functions={this.state.functions}
-          btns={this.state.functions}
-          add={this.add}
-          remove={this.remove}
-          enqueue={this.enqueue}
-          dequeue={this.dequeue}
-          push={this.push}
-          pop={this.pop}
-        />
-        <Alert />
+        <div className={ds.visualizer}>
+          <Toolbar
+            functions={this.state.functions}
+            btns={this.state.functions}
+            add={this.add}
+            remove={this.remove}
+            enqueue={this.enqueue}
+            dequeue={this.dequeue}
+            push={this.push}
+            pop={this.pop}
+          />
+          <Alert />
 
-        <div style={{ marginLeft: "1.5em" }}>
-          {this.state.structure.map((item, key) => {
-            if (key === 0 || key === this.state.structure.length - 1) {
-              if (this.state.structure.length - 1 == 0) {
-                return (
-                  <div className={ds.item} id={`item_${key}`} key={key}>
-                  <div>{item}</div>
-                  <div style={{ fontSize: "0.65em" }}>
-                    Head {' & '}
-                    Tail
-                  </div>
-                </div>
-              );
+          <div style={{ marginLeft: "1.5em" }}>
+            {this.state.structure.map((item, key) => {
+              if (key === 0 || key === this.state.structure.length - 1) {
+                if (this.state.structure.length - 1 == 0) {
+                  return (
+                    <div className={ds.item} id={`item_${key}`} key={key}>
+                      <div>{item}</div>
+                      <div style={{ fontSize: "0.5em" }}>
+                        Head {" & "}
+                        Tail
+                      </div>
+                    </div>
+                  );
+                } else {
+                  return (
+                    <div className={ds.item} id={`item_${key}`} key={key}>
+                      <div>{item}</div>
+                      <div style={{ fontSize: "0.5em" }}>
+                        {key === 0 ? "Head" : "Tail"}
+                      </div>
+                    </div>
+                  );
+                }
               } else {
                 return (
                   <div className={ds.item} id={`item_${key}`} key={key}>
-                  <div>{item}</div>
-                  <div style={{ fontSize: "0.7em" }}>
-                    {key === 0 ? "Head" : "Tail"}
+                    {item}
                   </div>
-                </div>
-              );
-            }
-            } else {
-              return (
-                <div className={ds.item} id={`item_${key}`} key={key}>
-                  {item}
-                </div>
-              );
-            }
-          })}
+                );
+              }
+            })}
+          </div>
         </div>
       </div>
     );

@@ -1,11 +1,6 @@
 #nav {
-    /* margin-top: 0.5em;
-    margin-bottom: 1em;
-    margin-left: 0.25em;
-    margin-right: 0.25em;
-    align-items: center; */
-
-    height: 6em;
+    min-height: 6em;
+    height: fit-content;
     padding: 0.5em;
     margin: 0 !important;
     align-items: center;

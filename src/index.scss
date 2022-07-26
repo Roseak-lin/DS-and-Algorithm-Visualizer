@@ -14,7 +14,7 @@
     padding: 0.5em;
     color: #000;
     background: transparent;
-    transition: 0.3s;
+    transition: all 0.3s;
     border-radius: 1em;
     border: 1px solid #000;
 }
@@ -22,8 +22,8 @@
 #repoLink:hover {
     cursor: pointer;
     border: none;
-    color: #fff;
-    fill: #fff;
+    color: white;
+    fill: white;
     background: linear-gradient(#4fd800, #2596ff);
-    transition: 0.3s;
+    transition: all 0.3s;
 }

@@ -9,7 +9,7 @@ import MainPage from './MainPage/HomeScreen';
 import AlgoVisualizer from './Algo/AlgoVisualizer'
 import DataStructures from './DS\'s/DataStructures'
 import './Nav.css';
-import './index.css';
+import './index.scss';
 
 ReactDOM.render(
   <BrowserRouter>
